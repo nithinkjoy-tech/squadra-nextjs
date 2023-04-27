@@ -27,7 +27,8 @@ export default function BasicTable({
   handleOpen,
   handleClose,
   setEditFormData,
-  setAction
+  setAction,
+  setConfirmBoxOpen
 }) {
   return (
     <div>
@@ -82,7 +83,7 @@ export default function BasicTable({
                 setEditFormData(row);
                 setAction("Edit")
                 }}/>
-                <i style={{margin:"2rem",cursor:"pointer"}}>
+                <i style={{margin:"2rem",cursor:"pointer"}} onClick={()=>setConfirmBoxOpen(true)}>
                   <DeleteIcon/>
                 </i>
                 </TableCell>
