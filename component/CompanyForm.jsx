@@ -60,7 +60,6 @@ const style = {
 };
 
 export default function CompanyForm({open,handleClose,editFormData,selectedDomain,action,filter=false}) {
-  console.log(selectedDomain,"sd")
   const [date, setDate] = useState(dayjs('2022-04-17'));
   const {
     handleSubmit,
@@ -264,7 +263,9 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
                 type="submit"
                 sx={{marginTop:"1rem"}}
               >
-                ADD
+                {action=="Add"&&`ADD`}
+                {action=="Edit"&&`Update`}
+                {action=="Filter"&&`Continue`}
               </Button>
           </form>
         </Box>
