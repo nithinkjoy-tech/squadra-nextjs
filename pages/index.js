@@ -9,7 +9,7 @@ import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] =useState("Companies");
+  const [selectedDomain, setSelectedDomain] =useState("Users");
   const [editFormData,setEditFormData]=useState(null)
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
@@ -34,7 +34,7 @@ export default function Home() {
         <Grid item md={10}>
           {selectedDomain == "Companies" && (
             <>
-              <CompanyForm setPageNumber={setPageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <CompanyForm setPageNumber={setPageNumber} pageNumber={pageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
               <Companies
                 data={data}
                 setPageNumber={setPageNumber}
@@ -51,11 +51,15 @@ export default function Home() {
           )}
           {selectedDomain == "Users" && (
             <>
-              <UserForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <UserForm setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
               <Users setAction={setAction}
+              data={data}
+              setData={setData}
               open={open}
               handleOpen={handleOpen}
               handleClose={handleClose}
+              pageNumber={pageNumber}
+              setPageNumber={setPageNumber}
               selectedDomain={selectedDomain}
               setEditFormData={setEditFormData} />
             </>

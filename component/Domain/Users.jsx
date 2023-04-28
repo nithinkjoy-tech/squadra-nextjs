@@ -1,19 +1,41 @@
 import React from "react";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Header from "../Header";
-import Table from "../Table/Table";
+import UserTable from "../Table/UserTable";
 import Pagination from "../Pagination/Pagination";
-import { ConfirmProvider } from "material-ui-confirm";
+import {ConfirmProvider} from "material-ui-confirm";
+import {getUser} from "../../api/getUser";
+import {displayNotification} from "../../services/notificationService";
+import {axiosInstance} from "../../services/api-client";
 
-const Users = ({selectedDomain,
+const Users = ({
+  selectedDomain,
   open,
   handleOpen,
   handleClose,
   setEditFormData,
-  setAction,}) => {
+  setAction,
+  data,
+  setData,
+  pageNumber,
+  setPageNumber,
+}) => {
+  const fetchData = async () => {
+    try {
+      const data = await getUser(pageNumber);
+      console.log(data, "dt");
+      setData(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const [count, setCount] = useState(0);
-  const [pageNumber, setPageNumber] = useState(3);
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber]);
+
+  // const [count, setCount] = useState(0);
+  // const [pageNumber, setPageNumber] = useState(3);
 
   return (
     <React.Fragment>
@@ -25,19 +47,18 @@ const Users = ({selectedDomain,
         selectedDomain={selectedDomain}
       />
       <ConfirmProvider>
-      <Table
-        setAction={setAction}
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        setEditFormData={setEditFormData}
-        selectedDomain={selectedDomain}
-      />
+        <UserTable
+          data={data}
+          setData={setData}
+          setAction={setAction}
+          open={open}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          setEditFormData={setEditFormData}
+          selectedDomain={selectedDomain}
+        />
       </ConfirmProvider>
-      <Pagination
-        count={count}
-        setPageNumber={setPageNumber}
-      />
+      <Pagination count={data.totalPages} setPageNumber={setPageNumber} />
     </React.Fragment>
   );
 };

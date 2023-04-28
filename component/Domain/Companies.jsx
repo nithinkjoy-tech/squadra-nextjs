@@ -1,10 +1,10 @@
 import React from "react";
 import {useEffect} from "react";
 import Header from "../Header";
-import Table from "../Table/Table";
+import CompanyTable from "../Table/CompanyTable";
 import Pagination from "../Pagination/Pagination";
 import {ConfirmProvider} from "material-ui-confirm";
-import {getCompany} from "../../api/getCompany"
+import {getCompany} from "../../api/getCompany";
 
 const Companies = ({
   selectedDomain,
@@ -16,16 +16,16 @@ const Companies = ({
   data,
   setData,
   pageNumber,
-  setPageNumber
+  setPageNumber,
 }) => {
-  const fetchData=async()=>{
+  const fetchData = async () => {
     const data = await getCompany(pageNumber);
-    setData(data)
-  }
+    setData(data);
+  };
 
-  useEffect(()=>{
-    fetchData()
-  },[pageNumber])
+  useEffect(() => {
+    fetchData();
+  }, [pageNumber]);
 
   return (
     <React.Fragment>
@@ -37,7 +37,7 @@ const Companies = ({
         selectedDomain={selectedDomain}
       />
       <ConfirmProvider>
-        <Table
+        <CompanyTable
           setAction={setAction}
           setData={setData}
           data={data}
@@ -49,10 +49,7 @@ const Companies = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      <Pagination
-        count={data.totalPages}
-        setPageNumber={setPageNumber}
-      />
+      <Pagination count={data.totalPages} setPageNumber={setPageNumber} />
     </React.Fragment>
   );
 };
