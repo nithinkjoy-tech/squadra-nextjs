@@ -3,7 +3,7 @@ import {useState} from "react";
 import Header from "../Header";
 import Table from "../Table/Table";
 import Pagination from "../Pagination/Pagination";
-import { ConfirmProvider } from "material-ui-confirm";
+import {ConfirmProvider} from "material-ui-confirm";
 
 const Companies = ({
   selectedDomain,
@@ -26,14 +26,14 @@ const Companies = ({
         selectedDomain={selectedDomain}
       />
       <ConfirmProvider>
-      <Table
-        setAction={setAction}
-        open={open}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        setEditFormData={setEditFormData}
-        selectedDomain={selectedDomain}
-      />
+        <Table
+          setAction={setAction}
+          open={open}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          setEditFormData={setEditFormData}
+          selectedDomain={selectedDomain}
+        />
       </ConfirmProvider>
       <Pagination
         count={count}

@@ -1,18 +1,12 @@
 import React from "react";
 import {Typography, Button, Grid} from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import Form from "./CompanyForm";
 
 export default function Header({
   selectedDomain,
   handleOpen,
-  handleClose,
-  setAction
+  setAction,
 }) {
-  // const handleAddClick=()=>{
-  //     handleOpen(true)
-  // }
-
   return (
     <Grid container sx={{margin: 5}}>
       <Grid item xs={8}>
@@ -36,8 +30,9 @@ export default function Header({
               variant="contained"
               color="primary"
               sx={{width: 82, height: 36}}
-              onClick={() => {handleOpen();
-              setAction("Add")
+              onClick={() => {
+                handleOpen();
+                setAction("Add");
               }}
             >
               Add
@@ -53,9 +48,10 @@ export default function Header({
                 fontweight: 400,
                 fontsize: 15,
               }}
-              onClick={() => {handleOpen();
-              setAction("Filter")}
-              }
+              onClick={() => {
+                handleOpen();
+                setAction("Filter");
+              }}
             >
               <FilterAltIcon />
               Filters
