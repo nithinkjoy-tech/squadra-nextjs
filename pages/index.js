@@ -1,30 +1,23 @@
 import Head from "next/head";
-import Image from "next/image";
-import {Inter} from "next/font/google";
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
-import Table from "../component/Table/Table";
 import Companies from "../component/Domain/Companies";
 import Users from "../component/Domain/Users";
-import {Grid} from "@material-ui/core";
-import {useState} from "react";
 import CompanyForm from "../component/CompanyForm";
 import UserForm from "../component/UserForm";
-
-const inter = Inter({subsets: ["latin"]});
+import {Grid} from "@material-ui/core";
+import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] =
-    useState("Companies");
-
+  const [selectedDomain, setSelectedDomain] =useState("Companies");
   const [editFormData,setEditFormData]=useState(null)
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
   const [data, setData] = useState(0);
-const [pageNumber,setPageNumber] = useState(1);
+  const [pageNumber,setPageNumber] = useState(1);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // console.log(editFormData,"efd")
 
   return (
     <>
@@ -41,19 +34,19 @@ const [pageNumber,setPageNumber] = useState(1);
         <Grid item md={10}>
           {selectedDomain == "Companies" && (
             <>
-            <CompanyForm setPageNumber={setPageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
-            <Companies
-            data={data}
-            setPageNumber={setPageNumber}
-            pageNumber={pageNumber}
-            setData={setData}
-            setAction={setAction}
-            open={open}
-            handleOpen={handleOpen}
-              handleClose={handleClose}
-              selectedDomain={selectedDomain}
-              setEditFormData={setEditFormData}
-            />
+              <CompanyForm setPageNumber={setPageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <Companies
+                data={data}
+                setPageNumber={setPageNumber}
+                pageNumber={pageNumber}
+                setData={setData}
+                setAction={setAction}
+                open={open}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                selectedDomain={selectedDomain}
+                setEditFormData={setEditFormData}
+              />
             </>
           )}
           {selectedDomain == "Users" && (

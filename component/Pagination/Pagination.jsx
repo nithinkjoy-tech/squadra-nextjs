@@ -6,10 +6,8 @@ export default function BasicPagination({
   count,
   setPageNumber,
 }) {
-  console.log(count,"count")
   const handlePageChange = pageNumber => {
     setPageNumber(pageNumber);
-    console.log(pageNumber,"pno")
   };
 
   return (

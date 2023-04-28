@@ -14,7 +14,6 @@ import * as Yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
-import dayjs from "dayjs";
 
 const schema = Yup.object().shape({
   first_name: Yup.string()

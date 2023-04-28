@@ -2,64 +2,68 @@ import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
 import {deleteCompany} from "../../api/deleteCompany"
 import {displayNotification} from "../../services/notificationService"
+import {getCompany} from "../../api/getCompany"
 
 export default function BasicTable({
-  selectedDomain,
-  setPageNumber,
   handleOpen,
-  handleClose,
   setEditFormData,
   setAction,
+  pageNumber,
+  setData,
   data
 }) {
+
+
+  const fetchData=async()=>{
+    const data = await getCompany(pageNumber);
+    setData(data)
+  }
 
   const confirm = useConfirm();
 
   const handleDelete=async(id)=>{
     const response=await deleteCompany(id)
-    console.log(response)
     if(response.status=="200"){
+      fetchData()
       return displayNotification("info","Successfully Deleted")
     }
   }
 
   const handleConfirm = (id) => {
-    console.log(id,"iiid")
     confirm({ description: `Are you sure want to delete this company` })
       .then(() => {
         handleDelete(id)
       })
       .catch(() => console.log("Deletion cancelled."));
   }
-  console.log(data,"fdata")
 
   return (
     <div>
       <TableContainer component={Paper}>
         <Table
-          sx={{minWidth: 650, margin: "10px"}}
+          // sx={{minWidth: 650, margin: "10px"}}
           aria-label="simple table"
         >
           <TableHead>
             <TableRow>
               <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell align="right">Calories</TableCell>
-              <TableCell align="right">
+              <TableCell>Calories</TableCell>
+              <TableCell>
                 Fat&nbsp;(g)
               </TableCell>
-              <TableCell align="right">
+              <TableCell>
                 Carbs&nbsp;(g)
               </TableCell>
-              <TableCell align="right">
+              <TableCell>
                 Protein&nbsp;(g)
               </TableCell>
             </TableRow>
@@ -81,16 +85,16 @@ export default function BasicTable({
                 >
                   {row.companyEmail}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell >
                   {row.validTill}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell >
                   {row.organizationName}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell>
                   {row.companyId}
                 </TableCell>
-                <TableCell align="right">
+                <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}
                     onClick={() => {
@@ -114,8 +118,6 @@ export default function BasicTable({
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <span>Page no:4</span>
-      <Pagination setPageNumber={setPageNumber} /> */}
     </div>
   );
 }

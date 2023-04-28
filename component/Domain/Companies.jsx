@@ -1,11 +1,10 @@
 import React from "react";
-import {useState,useEffect} from "react";
+import {useEffect} from "react";
 import Header from "../Header";
 import Table from "../Table/Table";
 import Pagination from "../Pagination/Pagination";
 import {ConfirmProvider} from "material-ui-confirm";
-import getCompany from "../../api/getCompany"
-import {displayNotification} from "../../services/notificationService"
+import {getCompany} from "../../api/getCompany"
 
 const Companies = ({
   selectedDomain,
@@ -19,19 +18,15 @@ const Companies = ({
   pageNumber,
   setPageNumber
 }) => {
-  
-
   const fetchData=async()=>{
     const data = await getCompany(pageNumber);
-    console.log(data,"jjj")
     setData(data)
   }
 
   useEffect(()=>{
     fetchData()
   },[pageNumber])
-  // if (isLoading) return <h1>Loading...</h1>;
-  // if (error) return displayNotification("error","Network Error");
+
   return (
     <React.Fragment>
       <Header
@@ -44,8 +39,10 @@ const Companies = ({
       <ConfirmProvider>
         <Table
           setAction={setAction}
+          setData={setData}
           data={data}
           open={open}
+          pageNumber={pageNumber}
           handleOpen={handleOpen}
           handleClose={handleClose}
           setEditFormData={setEditFormData}

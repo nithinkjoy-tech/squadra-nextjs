@@ -17,7 +17,6 @@ const drawerWidth = 240;
 export default function Sidebar({selectedDomain,setSelectedDomain}) {
 
   const handleClick=(domain)=>{
-    console.log("clicked")
     setSelectedDomain(domain)
   }
 

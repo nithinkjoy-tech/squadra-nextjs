@@ -18,6 +18,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {displayNotification} from "../services/notificationService";
 import {addCompany} from "../api/addCompany"
+import {getCompany} from "../api/getCompany"
 import {editCompany} from "../api/editCompany"
 import {filterCompany} from "../api/filterCompany"
 
@@ -41,7 +42,7 @@ const schema = Yup.object().shape({
     .label("Organization Name"),
   companyId: Yup.string()
     .required()
-    .min(6, "Minimum 6 Alpha numeric characters")
+    .matches(/^[A-Za-z]{3}[0-9]{3}$/, "First 3 characters should be alphabet and next 3 should be number")
     .label("Company ID"),
 });
 
@@ -63,7 +64,9 @@ export default function CompanyForm({
   editFormData,
   selectedDomain,
   action,
-  setData={setData}
+  setData,
+  pageNumber,
+  setPageNumber
 }) {
   const {
     handleSubmit,
@@ -86,59 +89,58 @@ export default function CompanyForm({
   });
 
   useEffect(()=>{
+    if(action=="Add"){
+      reset()
+    }
     if(editFormData){
-      // editFormData.validTill=dayjs(editFormData?.validTill)
       setValue(
         "validTill",
         dayjs(new Date(editFormData.validTill)),
         true
       );
-      console.log(editFormData,"ppp")
       reset(editFormData)
     }
   },[editFormData])
 
+  const fetchData=async()=>{
+    const data = await getCompany(pageNumber);
+    setData(data)
+  }
+
   const submit = async(data) => {
     data.validTill = dayjs(data.validTill).format('YYYY-MM-DD');
-    console.log(data,"sending")
     if(action=="Add"){
-       const response=await addCompany(data)
-       if(response.status=="200"){
-         displayNotification("info", "Successfully Added");
-         window.location="/"
-         handleClose()
-       }else{
-         displayNotification("error", "Something went Wrong");
-       }
-       console.log(response,"resp")
+      try{
+        const response=await addCompany(data)
+        console.log(response)
+        if(response.status=="200"){
+          displayNotification("info", "Successfully Added");
+          fetchData()
+          handleClose()
+        }else{
+          displayNotification("error", "Something went Wrong");
+        }
+      }catch(err){
+        displayNotification("error", "Something went Wrong");
+      }
     }
 
     if(action=="Edit"){
-      console.log(data.id,"did")
       const response=await editCompany(data.id,data)
       if(response.status=="200"){
         displayNotification("info", "Successfully Edited");
-        window.location="/"
+        fetchData()
         handleClose()
       }else{
         displayNotification("error", "Something went Wrong");
       }
-      console.log(response,"resp")
    }
 
    if(action=="Filter"){
-    console.log(data.id,"did")
     const response=await filterCompany(data)
     setData(response.data)
-    // if(response.status=="200"){
-    //   displayNotification("info", "Successfully Filtered");
-    //   handleClose()
-    // }else{
-    //   displayNotification("error", "Something went Wrong");
-    // }
-    console.log(response,"resp")
+    handleClose()
  }
-
 
   };
 
@@ -248,18 +250,7 @@ export default function CompanyForm({
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
                 >
-                  <DatePicker
-                    // defaultValue={dayjs(
-                    //   new Date(getValues("validTill"))
-                    // )}
-                    
-                    shouldDisableDate={()=>{
-                      {editFormData&&setValue(
-                        "validTill",
-                        new Date(editFormData?.validTill),
-                        true
-                      );}
-                    }}
+                  <DatePicker       
                     onChange={date => {
                       setValue(
                         "validTill",
