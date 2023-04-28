@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {displayNotification} from "../services/notificationService"
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
@@ -44,6 +45,8 @@ const handleDateChange=(date,m)=>{
   let newDate=new Date(date)
   
   console.log(date,"dtt")
+  
+  // displayNotification("error", );
   // console.log(new Date(date),"dtt")
 }
 
@@ -61,6 +64,7 @@ const style = {
 
 export default function CompanyForm({open,handleClose,editFormData,selectedDomain,action,filter=false}) {
   const [date, setDate] = useState(dayjs('2022-04-17'));
+  console.log(action,"act")
   const {
     handleSubmit,
     formState: {errors},
@@ -70,7 +74,7 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
     clearErrors,
     reset
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: action=="Filter"?"":yupResolver(schema),
     mode: "onTouched",
     defaultValues:editFormData||{
       companyName : "",
@@ -83,7 +87,8 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
 
   const submit = data => {
     data.validTill=dayjs(data.validTill).format('DD/MM/YYYY')
-    console.log(data);
+    console.log(data,"oper");
+    displayNotification("info", "Successfully Added");
   };
 
   const inputBoxStyles = {
@@ -144,7 +149,7 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
               </div>
 
               <div>
-              <InputLabel>Company&aposs Email ID</InputLabel>
+              <InputLabel>Company's Email ID</InputLabel>
               <TextField
                 id="companyEmail"
                 fullWidth

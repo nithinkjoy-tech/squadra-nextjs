@@ -1,6 +1,6 @@
 import React,{useState} from "react";
 import Modal from "@mui/material/Modal";
-import {TextField, Button, Box,Typography,FormHelperText} from "@mui/material";
+import {TextField, Button, Box,Typography,FormHelperText,Select,MenuItem} from "@mui/material";
 import {useForm} from "react-hook-form";
 import * as Yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -16,31 +16,33 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const schema = Yup.object().shape({
-  firstName: Yup.string()
+  first_name: Yup.string()
     .required()
     .min(3, "minimum 3 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
-    .label("Name"),
-  lastName: Yup.string()
+    .label("First Name"),
+  last_name: Yup.string()
     .required()
     .min(3, "minimum 3 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
-    .label("Name"),
-  companyEmail: Yup.string()
+    .label("Last Name"),
+  email: Yup.string()
     .required()
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Should be a valid email")
     .label("Company Email"),
-  validTill: Yup.string()
+  phone: Yup.string()
     .required()
-    .label("Date"),
-  organizationName: Yup.string()
+    .matches(/^[789]\d{9}$/,"Invalid Phone number")
+    .label("Phone Number"),
+company_name: Yup.string()
     .required()
     .min(3,"Minimum 3 Characters required")
-    .label("Organization Name"),
-  companyId: Yup.string()
+    .label("Company Name"),
+  user_state: Yup.string()
+    .oneOf(['Active', 'Inactive'])
     .required()
-    .min(6,"Minimum 6 Alpha numeric characters")
-    .label("Company ID")
+    .label("User State"),
+
 });
 
 // let [defaultDate,setDefaultDate]=useState("")
@@ -64,7 +66,7 @@ const style = {
   p: 4,
 };
 
-export default function CompanyForm({open,handleClose,editFormData,selectedDomain,action,filter=false}) {
+export default function CompanyForm({open,handleClose,editFormData,selectedDomain,action,}) {
   const [date, setDate] = useState(dayjs('2022-04-17'));
   const {
     handleSubmit,
@@ -75,24 +77,26 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
     clearErrors,
     reset
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: action=="Filter"?"":yupResolver(schema),
     mode: "onTouched",
     defaultValues:editFormData||{
-        firstName : "",
-      lastName : "",
-      validTill : "",
-      organizationName: "",
-      companyId : ""
+        first_name : "",
+      last_name : "",
+      email : "",
+      phone: "",
+      company_name : "",
+      user_state : "",
   }
   });
 
   const submit = data => {
-    data.validTill=dayjs(data.validTill).format('DD/MM/YYYY')
-    console.log(data);
+    // data.validTill=dayjs(data.validTill).format('DD/MM/YYYY')
+    console.log(data,"lll");
   };
 
   const inputBoxStyles = {
-    backgroundColor:"#F0EFFF"
+    backgroundColor:"#F0EFFF",
+    width:"100%"
   };
 
   return (
@@ -138,77 +142,85 @@ export default function CompanyForm({open,handleClose,editFormData,selectedDomai
               <div>
               <InputLabel>First Name</InputLabel>
               <TextField
-                id="firstName"
+                id="first_name"
                 fullWidth
                 sx={inputBoxStyles}
                 placeholder=""
-                {...register("firstName")}
-                error={errors.firstName ? true : false}
+                {...register("first_name")}
+                error={errors.first_name ? true : false}
               />
-              {errors.firstName&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.firstName?.message}</FormHelperText>}
+              {errors.first_name&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.first_name?.message}</FormHelperText>}
               </div>
 
               <div>
-              <InputLabel>Company&aposs Email ID</InputLabel>
+              <InputLabel>Last Name</InputLabel>
               <TextField
-                id="companyEmail"
+                id="last_name"
                 fullWidth
                 sx={inputBoxStyles}
                 placeholder=""
-                {...register("companyEmail")}
-                error={errors.companyEmail ? true : false}
+                {...register("last_name")}
+                error={errors.last_name ? true : false}
               />
-              {errors.companyEmail&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.companyEmail?.message}</FormHelperText>}
+              {errors.last_name&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.last_name?.message}</FormHelperText>}
+              </div>
+
+              
+
+              <div>
+              <InputLabel>Email ID</InputLabel>
+              <TextField
+                id="email"
+                fullWidth
+                sx={inputBoxStyles}
+                placeholder=""
+                {...register("email")}
+                error={errors.email ? true : false}
+              />
+              {errors.email&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.email?.message}</FormHelperText>}
               </div>
 
               <div>
-              <InputLabel>Valid Till</InputLabel>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DatePicker
-        defaultValue={dayjs(getValues("validTill"))}
-        onChange={(date)=>{
-          setValue("validTill",(new Date(date)),true);
-          clearErrors("validTill")
-        }}
-        disablePast={true}
-        // renderInput={(params) => <TextField {...params} />}
-        format="DD/MM/YYYY"
-      />
-    </LocalizationProvider>
-    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />
-        <DatePicker
-          label="Controlled picker"
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
-        />
-    </LocalizationProvider> */}
-              {errors.validTill&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.validTill?.message}</FormHelperText>}
-              </div>
-
-              <div>
-              <InputLabel>Organisation Name</InputLabel>
+              <InputLabel>Phone Number</InputLabel>
               <TextField
-                id="organizationName"
+                id="phone"
                 fullWidth
                 sx={inputBoxStyles}
                 placeholder=""
-                {...register("organizationName")}
-                error={errors.organizationName ? true : false}
+                {...register("phone")}
+                error={errors.phone ? true : false}
               />
-              {errors.organizationName&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.organizationName?.message}</FormHelperText>}
+              {errors.phone&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.phone?.message}</FormHelperText>}
               </div>
               <div>
-              <InputLabel>Company ID</InputLabel>
+              <InputLabel>User State</InputLabel>
+              <Select
+            labelId="role-select-label"
+            id="role-select"
+            onChange={(event)=>{
+                setValue("user_state",event.target.value,true);
+                clearErrors("user_state")
+                // console.log(value,"gggg")
+              }}
+            sx={inputBoxStyles}
+          >
+            <MenuItem value=""></MenuItem>
+            <MenuItem value={"Inactive"}>Inactive</MenuItem>
+            <MenuItem value={"Active"}>Active</MenuItem>
+          </Select>
+          {errors.user_state&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.user_state?.message}</FormHelperText>}
+              </div>
+              <div>
+              <InputLabel>Company Name</InputLabel>
               <TextField
-                id="companyId"
+                id="company_name"
                 fullWidth
                 sx={inputBoxStyles}
                 placeholder=""
-                {...register("companyId")}
-                error={errors.companyId ? true : false}
+                {...register("company_name")}
+                error={errors.company_name ? true : false}
               />
-              {errors.companyId&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.companyId?.message}</FormHelperText>}
+              {errors.company_name&&<FormHelperText error={true} id="outlined-weight-helper-text">{errors?.company_name?.message}</FormHelperText>}
               </div>
               {/* <TextField
                 id="companyEmail"

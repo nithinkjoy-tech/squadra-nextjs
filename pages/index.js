@@ -8,9 +8,8 @@ import Companies from "../component/Domain/Companies";
 import Users from "../component/Domain/Users";
 import {Grid} from "@material-ui/core";
 import {useState} from "react";
-import Modal from "../component/Modal";
 import CompanyForm from "../component/CompanyForm";
-import Pagination from "../component/Pagination/Pagination";
+import UserForm from "../component/UserForm";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -37,10 +36,9 @@ export default function Home() {
           />
         </Grid>
         <Grid item md={10}>
-          {/* <Modal handleClose={handleClose} open={open}> */}
-          <CompanyForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
-          {/* </Modal> */}
           {selectedDomain == "Companies" && (
+            <>
+            <CompanyForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
             <Companies
             setAction={setAction}
             open={open}
@@ -49,17 +47,19 @@ export default function Home() {
               selectedDomain={selectedDomain}
               setEditFormData={setEditFormData}
             />
+            </>
           )}
           {selectedDomain == "Users" && (
-            <Users setAction={setAction}
-            open={open}
-            handleOpen={handleOpen}
-            handleClose={handleClose}
-            selectedDomain={selectedDomain}
-            setEditFormData={setEditFormData} />
+            <>
+              <UserForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <Users setAction={setAction}
+              open={open}
+              handleOpen={handleOpen}
+              handleClose={handleClose}
+              selectedDomain={selectedDomain}
+              setEditFormData={setEditFormData} />
+            </>
           )}
-          {/* <Table selectedDomain={selectedDomain}/> */}
-          {/* <Pagination/> */}
         </Grid>
       </Grid>
     </>
