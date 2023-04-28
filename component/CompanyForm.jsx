@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import Modal from "@mui/material/Modal";
 import {
   TextField,
@@ -17,12 +17,15 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {displayNotification} from "../services/notificationService";
+import {addCompany} from "../api/addCompany"
+import {editCompany} from "../api/editCompany"
+import {filterCompany} from "../api/filterCompany"
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
     .required()
     .min(3, "minimum 3 characters long")
-    .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
+    .matches(/\w+[\s\w]*\w+/g, "Invalid Company Name")
     .label("Name"),
   companyEmail: Yup.string()
     .required()
@@ -60,6 +63,7 @@ export default function CompanyForm({
   editFormData,
   selectedDomain,
   action,
+  setData={setData}
 }) {
   const {
     handleSubmit,
@@ -72,7 +76,7 @@ export default function CompanyForm({
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
-    defaultValues: editFormData || {
+    defaultValues: {
       companyName: "",
       companyEmail: "",
       validTill: "",
@@ -81,11 +85,61 @@ export default function CompanyForm({
     },
   });
 
-  const submit = data => {
-    data.validTill = dayjs(data.validTill).format(
-      "DD/MM/YYYY"
-    );
-    displayNotification("info", "Successfully Added");
+  useEffect(()=>{
+    if(editFormData){
+      // editFormData.validTill=dayjs(editFormData?.validTill)
+      setValue(
+        "validTill",
+        dayjs(new Date(editFormData.validTill)),
+        true
+      );
+      console.log(editFormData,"ppp")
+      reset(editFormData)
+    }
+  },[editFormData])
+
+  const submit = async(data) => {
+    data.validTill = dayjs(data.validTill).format('YYYY-MM-DD');
+    console.log(data,"sending")
+    if(action=="Add"){
+       const response=await addCompany(data)
+       if(response.status=="200"){
+         displayNotification("info", "Successfully Added");
+         window.location="/"
+         handleClose()
+       }else{
+         displayNotification("error", "Something went Wrong");
+       }
+       console.log(response,"resp")
+    }
+
+    if(action=="Edit"){
+      console.log(data.id,"did")
+      const response=await editCompany(data.id,data)
+      if(response.status=="200"){
+        displayNotification("info", "Successfully Edited");
+        window.location="/"
+        handleClose()
+      }else{
+        displayNotification("error", "Something went Wrong");
+      }
+      console.log(response,"resp")
+   }
+
+   if(action=="Filter"){
+    console.log(data.id,"did")
+    const response=await filterCompany(data)
+    setData(response.data)
+    // if(response.status=="200"){
+    //   displayNotification("info", "Successfully Filtered");
+    //   handleClose()
+    // }else{
+    //   displayNotification("error", "Something went Wrong");
+    // }
+    console.log(response,"resp")
+ }
+
+
   };
 
   const inputBoxStyles = {
@@ -170,7 +224,7 @@ export default function CompanyForm({
               </div>
 
               <div>
-                <InputLabel>Company's Email ID</InputLabel>
+                <InputLabel>Company&apos;s Email ID</InputLabel>
                 <TextField
                   id="companyEmail"
                   fullWidth
@@ -195,9 +249,17 @@ export default function CompanyForm({
                   dateAdapter={AdapterDayjs}
                 >
                   <DatePicker
-                    defaultValue={dayjs(
-                      getValues("validTill")
-                    )}
+                    // defaultValue={dayjs(
+                    //   new Date(getValues("validTill"))
+                    // )}
+                    
+                    shouldDisableDate={()=>{
+                      {editFormData&&setValue(
+                        "validTill",
+                        new Date(editFormData?.validTill),
+                        true
+                      );}
+                    }}
                     onChange={date => {
                       setValue(
                         "validTill",
@@ -206,6 +268,9 @@ export default function CompanyForm({
                       );
                       clearErrors("validTill");
                     }}
+                    defaultValue={
+                      dayjs(new Date(getValues("validTill")))
+                    }
                     disablePast={true}
                     format="DD/MM/YYYY"
                   />

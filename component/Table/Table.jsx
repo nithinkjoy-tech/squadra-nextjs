@@ -9,18 +9,8 @@ import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useConfirm } from "material-ui-confirm";
-
-function createData(name, calories, fat, carbs, protein) {
-  return {name, calories, fat, carbs, protein};
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+import {deleteCompany} from "../../api/deleteCompany"
+import {displayNotification} from "../../services/notificationService"
 
 export default function BasicTable({
   selectedDomain,
@@ -29,15 +19,28 @@ export default function BasicTable({
   handleClose,
   setEditFormData,
   setAction,
+  data
 }) {
 
   const confirm = useConfirm();
 
-  const handleDelete = (id) => {
+  const handleDelete=async(id)=>{
+    const response=await deleteCompany(id)
+    console.log(response)
+    if(response.status=="200"){
+      return displayNotification("info","Successfully Deleted")
+    }
+  }
+
+  const handleConfirm = (id) => {
+    console.log(id,"iiid")
     confirm({ description: `Are you sure want to delete this company` })
-      .then(() => console.log("deleted",id))
+      .then(() => {
+        handleDelete(id)
+      })
       .catch(() => console.log("Deletion cancelled."));
   }
+  console.log(data,"fdata")
 
   return (
     <div>
@@ -62,9 +65,9 @@ export default function BasicTable({
             </TableRow>
           </TableHead>
           <TableBody sx={{margin: "14px"}}>
-            {rows.map(row => (
+            {data?.content?.map(row => (
               <TableRow
-                key={row.name}
+                key={row.companyName}
                 sx={{
                   "&:last-child td, &:last-child th": {
                     border: 0,
@@ -76,16 +79,16 @@ export default function BasicTable({
                   component="th"
                   scope="row"
                 >
-                  {row.name}
+                  {row.companyEmail}
                 </TableCell>
                 <TableCell align="right">
-                  {row.calories}
+                  {row.validTill}
                 </TableCell>
                 <TableCell align="right">
-                  {row.fat}
+                  {row.organizationName}
                 </TableCell>
                 <TableCell align="right">
-                  {row.carbs}
+                  {row.companyId}
                 </TableCell>
                 <TableCell align="right">
                   <EditIcon
@@ -101,7 +104,7 @@ export default function BasicTable({
                       margin: "2rem",
                       cursor: "pointer",
                     }}
-                    onClick={(row) => handleDelete(row.id)}
+                    onClick={() => handleConfirm(row.id)}
                   >
                     <DeleteIcon />
                   </i>
@@ -116,46 +119,3 @@ export default function BasicTable({
     </div>
   );
 }
-
-// export default function Table(){
-
-//     return (
-//         <>
-//             <div className="container">
-//   <h2>Responsive Tables Using LI <small>Triggers on 767px</small></h2>
-//   <ul className="responsive-table">
-//     <li className="table-header">
-//       <div className="col col-1">Job Id</div>
-//       <div className="col col-2">Customer Name</div>
-//       <div className="col col-3">Amount Due</div>
-//       <div className="col col-4">Payment Status</div>
-//     </li>
-//     <li className="table-row">
-//       <div className="col col-1" data-label="Job Id">42235</div>
-//       <div className="col col-2" data-label="Customer Name">John Doe</div>
-//       <div className="col col-3" data-label="Amount">$350</div>
-//       <div className="col col-4" data-label="Payment Status">Pending</div>
-//     </li>
-//     <li className="table-row">
-//       <div className="col col-1" data-label="Job Id">42442</div>
-//       <div className="col col-2" data-label="Customer Name">Jennifer Smith</div>
-//       <div className="col col-3" data-label="Amount">$220</div>
-//       <div className="col col-4" data-label="Payment Status">Pending</div>
-//     </li>
-//     <li className="table-row">
-//       <div className="col col-1" data-label="Job Id">42257</div>
-//       <div className="col col-2" data-label="Customer Name">John Smith</div>
-//       <div className="col col-3" data-label="Amount">$341</div>
-//       <div className="col col-4" data-label="Payment Status">Pending</div>
-//     </li>
-//     <li className="table-row">
-//       <div className="col col-1" data-label="Job Id">42311</div>
-//       <div className="col col-2" data-label="Customer Name">John Carpenter</div>
-//       <div className="col col-3" data-label="Amount">$115</div>
-//       <div className="col col-4" data-label="Payment Status">Pending</div>
-//     </li>
-//   </ul>
-// </div>
-//         </>
-//     )
-// }

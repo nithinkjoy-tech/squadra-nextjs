@@ -20,8 +20,11 @@ export default function Home() {
   const [editFormData,setEditFormData]=useState(null)
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
+  const [data, setData] = useState(0);
+const [pageNumber,setPageNumber] = useState(1);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  // console.log(editFormData,"efd")
 
   return (
     <>
@@ -38,8 +41,12 @@ export default function Home() {
         <Grid item md={10}>
           {selectedDomain == "Companies" && (
             <>
-            <CompanyForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+            <CompanyForm setPageNumber={setPageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
             <Companies
+            data={data}
+            setPageNumber={setPageNumber}
+            pageNumber={pageNumber}
+            setData={setData}
             setAction={setAction}
             open={open}
             handleOpen={handleOpen}
