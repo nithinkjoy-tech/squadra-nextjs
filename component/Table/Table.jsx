@@ -6,8 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useConfirm } from "material-ui-confirm";
 
 function createData(name, calories, fat, carbs, protein) {
   return {name, calories, fat, carbs, protein};
@@ -28,8 +29,16 @@ export default function BasicTable({
   handleClose,
   setEditFormData,
   setAction,
-  setConfirmBoxOpen
 }) {
+
+  const confirm = useConfirm();
+
+  const handleDelete = (id) => {
+    confirm({ description: `Are you sure want to delete this company` })
+      .then(() => console.log("deleted",id))
+      .catch(() => console.log("Deletion cancelled."));
+  }
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -79,13 +88,23 @@ export default function BasicTable({
                   {row.carbs}
                 </TableCell>
                 <TableCell align="right">
-                <EditIcon style={{cursor:"pointer"}} onClick={()=>{handleOpen();
-                setEditFormData(row);
-                setAction("Edit")
-                }}/>
-                <i style={{margin:"2rem",cursor:"pointer"}} onClick={()=>setConfirmBoxOpen(true)}>
-                  <DeleteIcon/>
-                </i>
+                  <EditIcon
+                    style={{cursor: "pointer"}}
+                    onClick={() => {
+                      handleOpen();
+                      setEditFormData(row);
+                      setAction("Edit");
+                    }}
+                  />
+                  <i
+                    style={{
+                      margin: "2rem",
+                      cursor: "pointer",
+                    }}
+                    onClick={(row) => handleDelete(row.id)}
+                  >
+                    <DeleteIcon />
+                  </i>
                 </TableCell>
               </TableRow>
             ))}

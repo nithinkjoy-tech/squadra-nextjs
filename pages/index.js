@@ -9,8 +9,7 @@ import Users from "../component/Domain/Users";
 import {Grid} from "@material-ui/core";
 import {useState} from "react";
 import Modal from "../component/Modal";
-import Form from "../component/CompanyForm";
-import Confirmation from "../component/Confirmation";
+import CompanyForm from "../component/CompanyForm";
 import Pagination from "../component/Pagination/Pagination";
 
 const inter = Inter({subsets: ["latin"]});
@@ -21,7 +20,6 @@ export default function Home() {
 
   const [editFormData,setEditFormData]=useState(null)
   const [open, setOpen] = useState(false);
-  const [confirmBoxOpen, setConfirmBoxOpen] = useState(false);
   const [action, setAction] = useState("Add");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -40,22 +38,25 @@ export default function Home() {
         </Grid>
         <Grid item md={10}>
           {/* <Modal handleClose={handleClose} open={open}> */}
-          <Form selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
-          <Confirmation confirmBoxOpen={confirmBoxOpen} setConfirmBoxOpen={setConfirmBoxOpen} />
+          <CompanyForm selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
           {/* </Modal> */}
           {selectedDomain == "Companies" && (
             <Companies
-            setConfirmBoxOpen={setConfirmBoxOpen}
             setAction={setAction}
-              open={open}
-              handleOpen={handleOpen}
+            open={open}
+            handleOpen={handleOpen}
               handleClose={handleClose}
               selectedDomain={selectedDomain}
               setEditFormData={setEditFormData}
             />
           )}
           {selectedDomain == "Users" && (
-            <Users selectedDomain={selectedDomain} />
+            <Users setAction={setAction}
+            open={open}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            selectedDomain={selectedDomain}
+            setEditFormData={setEditFormData} />
           )}
           {/* <Table selectedDomain={selectedDomain}/> */}
           {/* <Pagination/> */}
