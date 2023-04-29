@@ -20,8 +20,6 @@ export const companyNameStyle = {
   }
   
   export const navbarStyle={
-    // position: "absolute",
-    // width: "1920px",
     height: "90px",
     left: "0px",
     top: "0px",

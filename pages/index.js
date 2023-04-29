@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
 import Companies from "../component/Domain/Companies";

@@ -1,5 +1,9 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import Modal from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import InputLabel from "@mui/material/InputLabel";
+import dayjs from "dayjs";
+import * as Yup from "yup";
 import {
   TextField,
   Button,
@@ -8,11 +12,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import {useForm} from "react-hook-form";
-import * as Yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import CloseIcon from "@mui/icons-material/Close";
-import InputLabel from "@mui/material/InputLabel";
-import dayjs from "dayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
@@ -66,7 +66,6 @@ export default function CompanyForm({
   action,
   setData,
   pageNumber,
-  setPageNumber,
 }) {
   const {
     handleSubmit,
@@ -99,11 +98,11 @@ export default function CompanyForm({
   }, [editFormData]);
 
   const fetchData = async () => {
-    try{
+    try {
       const data = await getCompany(pageNumber);
       setData(data);
-    }catch(err){
-      displayNotification("error","Something went Wrong")
+    } catch (err) {
+      displayNotification("error", "Something went Wrong");
     }
   };
 
@@ -112,8 +111,7 @@ export default function CompanyForm({
     if (action == "Add") {
       try {
         const response = await addCompany(data);
-        console.log(response);
-        if (response.status >= "200"||response.status <= "300") {
+        if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Added");
           fetchData();
           handleClose();
@@ -126,25 +124,25 @@ export default function CompanyForm({
     }
 
     if (action == "Edit") {
-      try{
+      try {
         const response = await editCompany(data.id, data);
-      if (response.status >= "200"||response.status<="300") {
-        displayNotification("info", "Successfully Edited");
-        fetchData();
-        handleClose();
-      } 
-      }catch(err){
-        displayNotification("error","Something went Wrong")
+        if (response.status >= "200" || response.status <= "300") {
+          displayNotification("info", "Successfully Edited");
+          fetchData();
+          handleClose();
+        }
+      } catch (err) {
+        displayNotification("error", "Something went Wrong");
       }
     }
 
     if (action == "Filter") {
-      try{
+      try {
         const response = await filterCompany(data);
-      setData(response.data);
-      handleClose();
-      }catch(err){
-        displayNotification("error","Something Went Wrong")
+        setData(response.data);
+        handleClose();
+      } catch (err) {
+        displayNotification("error", "Something Went Wrong");
       }
     }
   };

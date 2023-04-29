@@ -22,25 +22,25 @@ export default function BasicTable({
   data,
 }) {
   const fetchData = async () => {
-    try{
+    try {
       const data = await getCompany(pageNumber);
-    setData(data);
-    }catch(err){
-      displayNotification("error","Something Went Wrong")
+      setData(data);
+    } catch (err) {
+      displayNotification("error", "Something Went Wrong");
     }
   };
 
   const confirm = useConfirm();
 
   const handleDelete = async id => {
-    try{
+    try {
       const response = await deleteCompany(id);
-    if (response.status == "200") {
-      fetchData();
-      return displayNotification("info", "Successfully Deleted");
-    }
-    }catch(err){
-      displayNotification("error","Something Went wrong")
+      if (response.status == "200") {
+        fetchData();
+        return displayNotification("info", "Successfully Deleted");
+      }
+    } catch (err) {
+      displayNotification("error", "Something Went wrong");
     }
   };
 
@@ -55,9 +55,7 @@ export default function BasicTable({
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table
-          aria-label="simple table"
-        >
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Company Name</TableCell>
@@ -69,16 +67,10 @@ export default function BasicTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.content?.map((row,index) => (
-              <TableRow
-                key={index}
-              >
-                <TableCell>
-                  {row.companyName}
-                </TableCell>
-                <TableCell>
-                  {row.companyEmail}
-                </TableCell>
+            {data?.content?.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{row.companyName}</TableCell>
+                <TableCell>{row.companyEmail}</TableCell>
                 <TableCell>{row.validTill}</TableCell>
                 <TableCell>{row.organizationName}</TableCell>
                 <TableCell>{row.companyId}</TableCell>

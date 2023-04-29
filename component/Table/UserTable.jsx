@@ -9,10 +9,8 @@ import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useConfirm} from "material-ui-confirm";
-import {deleteCompany} from "../../api/deleteCompany";
 import {deleteUser} from "../../api/deleteUser";
 import {displayNotification} from "../../services/notificationService";
-import {getCompany} from "../../api/getCompany";
 import {getUser} from "../../api/getUser";
 
 export default function BasicTable({
@@ -23,21 +21,18 @@ export default function BasicTable({
   setData,
   data,
 }) {
-  console.log(data, "dtt");
   const fetchData = async () => {
-    try{
+    try {
       const data = await getUser(pageNumber);
-    setData(data);
-    }catch(err){
-      console.log(err,"teft")
-      displayNotification("error","Something went wrong")
+      setData(data);
+    } catch (err) {
+      displayNotification("error", "Could not fetch data");
     }
   };
 
   const confirm = useConfirm();
 
   const handleDelete = async id => {
-    console.log(id, "id");
     try {
       const response = await deleteUser(id);
       if (response.status >= "200" || response.status < "300") {
@@ -45,8 +40,7 @@ export default function BasicTable({
         return displayNotification("info", "Successfully Deleted");
       }
     } catch (err) {
-      console.log(err,"jj")
-      // displayNotification("error", "Something went wrong");
+      displayNotification("error", "Could not delete");
     }
   };
 
@@ -62,7 +56,6 @@ export default function BasicTable({
     <div>
       <TableContainer component={Paper}>
         <Table
-          // sx={{minWidth: 650, margin: "10px"}}
           aria-label="simple table"
         >
           <TableHead>
@@ -76,17 +69,15 @@ export default function BasicTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.user?.map((row,index) => (
-              <TableRow
-                key={index}
-              >
+            {data?.user?.map((row, index) => (
+              <TableRow key={index}>
                 <TableCell sx={{margin: "14px"}} component="th" scope="row">
-                  {row.first_name+" "+row.last_name}
+                  {row.first_name + " " + row.last_name}
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.phone}</TableCell>
                 <TableCell>{row.company_name}</TableCell>
-                <TableCell>{row.user_state?"Active":"Inactive"}</TableCell>
+                <TableCell>{row.user_state ? "Active" : "Inactive"}</TableCell>
                 <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}

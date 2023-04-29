@@ -68,15 +68,14 @@ export default function CompanyForm({
   selectedDomain,
   action,
   setData,
-  data,
   pageNumber = 1,
 }) {
   const fetchData = async () => {
-    try{
+    try {
       const data = await getUser(pageNumber);
-    setData(data);
-    }catch(err){
-      displayNotification("error","Something went wrong")
+      setData(data);
+    } catch (err) {
+      displayNotification("error", "Something went wrong");
     }
   };
 
@@ -109,7 +108,6 @@ export default function CompanyForm({
   }, [editFormData, action]);
 
   const submit = async data => {
-    console.log(data, "lll");
     if (action == "Add") {
       if (data.user_state == "Active") {
         data.user_state = true;
@@ -118,7 +116,6 @@ export default function CompanyForm({
       }
       try {
         const response = await addUser(data);
-        console.log(response);
         if (response.status >= "200" && response.status <= "300") {
           displayNotification("info", "Successfully Added");
           fetchData();
@@ -130,7 +127,6 @@ export default function CompanyForm({
           );
         }
       } catch (err) {
-        console.log(err, "er");
         displayNotification("error", "Something went Wrong");
       }
     }
@@ -151,7 +147,7 @@ export default function CompanyForm({
           displayNotification("error", "Something went Wrong");
         }
       } catch (err) {
-        console.log(err);
+        displayNotification("error", "Something went Wrong");
       }
     }
 
@@ -161,7 +157,7 @@ export default function CompanyForm({
         setData(response.data);
         handleClose();
       } catch (err) {
-        console.log(err, "filtererr");
+        displayNotification("error", "Could not filter");
       }
     }
   };

@@ -1,12 +1,11 @@
 import React from "react";
-import {useState, useEffect} from "react";
 import Header from "../Header";
 import UserTable from "../Table/UserTable";
 import Pagination from "../Pagination/Pagination";
+import {useEffect} from "react";
 import {ConfirmProvider} from "material-ui-confirm";
 import {getUser} from "../../api/getUser";
-import {displayNotification} from "../../services/notificationService";
-import {axiosInstance} from "../../services/api-client";
+import {displayNotification} from "../../services/notificationService"
 
 const Users = ({
   selectedDomain,
@@ -23,19 +22,15 @@ const Users = ({
   const fetchData = async () => {
     try {
       const data = await getUser(pageNumber);
-      console.log(data, "dt");
       setData(data);
     } catch (err) {
-      console.log(err);
+      displayNotification("error","Could not fetch data");
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [pageNumber]);
-
-  // const [count, setCount] = useState(0);
-  // const [pageNumber, setPageNumber] = useState(3);
 
   return (
     <React.Fragment>
@@ -58,7 +53,10 @@ const Users = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      <Pagination count={Number(data.totalPages)-1} setPageNumber={setPageNumber} />
+      <Pagination
+        count={Number(data.totalPages) - 1}
+        setPageNumber={setPageNumber}
+      />
     </React.Fragment>
   );
 };

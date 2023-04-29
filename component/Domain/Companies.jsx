@@ -1,11 +1,11 @@
 import React from "react";
-import {useEffect} from "react";
 import Header from "../Header";
 import CompanyTable from "../Table/CompanyTable";
 import Pagination from "../Pagination/Pagination";
+import {useEffect} from "react";
 import {ConfirmProvider} from "material-ui-confirm";
 import {getCompany} from "../../api/getCompany";
-import {displayNotification} from "../../services/notificationService"
+import {displayNotification} from "../../services/notificationService";
 
 const Companies = ({
   selectedDomain,
@@ -20,11 +20,11 @@ const Companies = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    try{
+    try {
       const data = await getCompany(pageNumber);
-    setData(data);
-    }catch(err){
-      displayNotification("error","Something went wrong")
+      setData(data);
+    } catch (err) {
+      displayNotification("error", "Something went wrong");
     }
   };
 
