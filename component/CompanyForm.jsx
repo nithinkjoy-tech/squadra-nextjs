@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import Modal from "@mui/material/Modal";
 import {
   TextField,
@@ -17,10 +17,10 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {displayNotification} from "../services/notificationService";
-import {addCompany} from "../api/addCompany"
-import {getCompany} from "../api/getCompany"
-import {editCompany} from "../api/editCompany"
-import {filterCompany} from "../api/filterCompany"
+import {addCompany} from "../api/addCompany";
+import {getCompany} from "../api/getCompany";
+import {editCompany} from "../api/editCompany";
+import {filterCompany} from "../api/filterCompany";
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
@@ -30,10 +30,7 @@ const schema = Yup.object().shape({
     .label("Name"),
   companyEmail: Yup.string()
     .required()
-    .matches(
-      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-      "Should be a valid email"
-    )
+    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Should be a valid email")
     .label("Company Email"),
   validTill: Yup.string().required().label("Date"),
   organizationName: Yup.string()
@@ -42,7 +39,10 @@ const schema = Yup.object().shape({
     .label("Organization Name"),
   companyId: Yup.string()
     .required()
-    .matches(/^[A-Za-z]{3}[0-9]{3}$/, "First 3 characters should be alphabet and next 3 should be number")
+    .matches(
+      /^[A-Za-z]{3}[0-9]{3}$/,
+      "First 3 characters should be alphabet and next 3 should be number"
+    )
     .label("Company ID"),
 });
 
@@ -66,7 +66,7 @@ export default function CompanyForm({
   action,
   setData,
   pageNumber,
-  setPageNumber
+  setPageNumber,
 }) {
   const {
     handleSubmit,
@@ -88,60 +88,55 @@ export default function CompanyForm({
     },
   });
 
-  useEffect(()=>{
-    if(action=="Add"){
-      reset()
+  useEffect(() => {
+    if (action == "Add") {
+      reset();
     }
-    if(editFormData){
-      setValue(
-        "validTill",
-        dayjs(new Date(editFormData.validTill)),
-        true
-      );
-      reset(editFormData)
+    if (editFormData) {
+      setValue("validTill", dayjs(new Date(editFormData.validTill)), true);
+      reset(editFormData);
     }
-  },[editFormData])
+  }, [editFormData]);
 
-  const fetchData=async()=>{
+  const fetchData = async () => {
     const data = await getCompany(pageNumber);
-    setData(data)
-  }
+    setData(data);
+  };
 
-  const submit = async(data) => {
-    data.validTill = dayjs(data.validTill).format('YYYY-MM-DD');
-    if(action=="Add"){
-      try{
-        const response=await addCompany(data)
-        console.log(response)
-        if(response.status=="200"){
+  const submit = async data => {
+    data.validTill = dayjs(data.validTill).format("YYYY-MM-DD");
+    if (action == "Add") {
+      try {
+        const response = await addCompany(data);
+        console.log(response);
+        if (response.status == "200") {
           displayNotification("info", "Successfully Added");
-          fetchData()
-          handleClose()
-        }else{
+          fetchData();
+          handleClose();
+        } else {
           displayNotification("error", "Something went Wrong");
         }
-      }catch(err){
+      } catch (err) {
         displayNotification("error", "Something went Wrong");
       }
     }
 
-    if(action=="Edit"){
-      const response=await editCompany(data.id,data)
-      if(response.status=="200"){
+    if (action == "Edit") {
+      const response = await editCompany(data.id, data);
+      if (response.status == "200") {
         displayNotification("info", "Successfully Edited");
-        fetchData()
-        handleClose()
-      }else{
+        fetchData();
+        handleClose();
+      } else {
         displayNotification("error", "Something went Wrong");
       }
-   }
+    }
 
-   if(action=="Filter"){
-    const response=await filterCompany(data)
-    setData(response.data)
-    handleClose()
- }
-
+    if (action == "Filter") {
+      const response = await filterCompany(data);
+      setData(response.data);
+      handleClose();
+    }
   };
 
   const inputBoxStyles = {
@@ -174,17 +169,12 @@ export default function CompanyForm({
                   color: "blue",
                 }}
               >
-                {selectedDomain == "Companies" &&
-                  `${action} Company`}
-                {selectedDomain == "Users" &&
-                  `${action} Users`}
+                {selectedDomain == "Companies" && `${action} Company`}
+                {selectedDomain == "Users" && `${action} Users`}
               </Typography>
               <div>
                 {action === "Filter" && (
-                  <Button
-                    variant="outlined"
-                    onClick={() => reset()}
-                  >
+                  <Button variant="outlined" onClick={() => reset()}>
                     Clear
                   </Button>
                 )}
@@ -216,10 +206,7 @@ export default function CompanyForm({
                   error={errors.companyName ? true : false}
                 />
                 {errors.companyName && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.companyName?.message}
                   </FormHelperText>
                 )}
@@ -236,10 +223,7 @@ export default function CompanyForm({
                   error={errors.companyEmail ? true : false}
                 />
                 {errors.companyEmail && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.companyEmail?.message}
                   </FormHelperText>
                 )}
@@ -247,31 +231,20 @@ export default function CompanyForm({
 
               <div>
                 <InputLabel>Valid Till</InputLabel>
-                <LocalizationProvider
-                  dateAdapter={AdapterDayjs}
-                >
-                  <DatePicker       
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
                     onChange={date => {
-                      setValue(
-                        "validTill",
-                        new Date(date),
-                        true
-                      );
+                      setValue("validTill", new Date(date), true);
                       clearErrors("validTill");
                     }}
-                    defaultValue={
-                      dayjs(new Date(getValues("validTill")))
-                    }
+                    defaultValue={dayjs(new Date(getValues("validTill")))}
                     disablePast={true}
                     format="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
 
                 {errors.validTill && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.validTill?.message}
                   </FormHelperText>
                 )}
@@ -285,15 +258,10 @@ export default function CompanyForm({
                   sx={inputBoxStyles}
                   placeholder=""
                   {...register("organizationName")}
-                  error={
-                    errors.organizationName ? true : false
-                  }
+                  error={errors.organizationName ? true : false}
                 />
                 {errors.organizationName && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.organizationName?.message}
                   </FormHelperText>
                 )}
@@ -309,20 +277,13 @@ export default function CompanyForm({
                   error={errors.companyId ? true : false}
                 />
                 {errors.companyId && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.companyId?.message}
                   </FormHelperText>
                 )}
               </div>
             </div>
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{marginTop: "1rem"}}
-            >
+            <Button variant="contained" type="submit" sx={{marginTop: "1rem"}}>
               {action == "Add" && `ADD`}
               {action == "Edit" && `Update`}
               {action == "Filter" && `Continue`}

@@ -8,10 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useConfirm } from "material-ui-confirm";
-import {deleteCompany} from "../../api/deleteCompany"
-import {displayNotification} from "../../services/notificationService"
-import {getCompany} from "../../api/getCompany"
+import {useConfirm} from "material-ui-confirm";
+import {deleteCompany} from "../../api/deleteCompany";
+import {displayNotification} from "../../services/notificationService";
+import {getCompany} from "../../api/getCompany";
 
 export default function BasicTable({
   handleOpen,
@@ -19,32 +19,30 @@ export default function BasicTable({
   setAction,
   pageNumber,
   setData,
-  data
+  data,
 }) {
-
-
-  const fetchData=async()=>{
+  const fetchData = async () => {
     const data = await getCompany(pageNumber);
-    setData(data)
-  }
+    setData(data);
+  };
 
   const confirm = useConfirm();
 
-  const handleDelete=async(id)=>{
-    const response=await deleteCompany(id)
-    if(response.status=="200"){
-      fetchData()
-      return displayNotification("info","Successfully Deleted")
+  const handleDelete = async id => {
+    const response = await deleteCompany(id);
+    if (response.status == "200") {
+      fetchData();
+      return displayNotification("info", "Successfully Deleted");
     }
-  }
+  };
 
-  const handleConfirm = (id) => {
-    confirm({ description: `Are you sure want to delete this company` })
+  const handleConfirm = id => {
+    confirm({description: `Are you sure want to delete this company`})
       .then(() => {
-        handleDelete(id)
+        handleDelete(id);
       })
       .catch(() => console.log("Deletion cancelled."));
-  }
+  };
 
   return (
     <div>
@@ -57,15 +55,9 @@ export default function BasicTable({
             <TableRow>
               <TableCell>Dessert (100g serving)</TableCell>
               <TableCell>Calories</TableCell>
-              <TableCell>
-                Fat&nbsp;(g)
-              </TableCell>
-              <TableCell>
-                Carbs&nbsp;(g)
-              </TableCell>
-              <TableCell>
-                Protein&nbsp;(g)
-              </TableCell>
+              <TableCell>Fat&nbsp;(g)</TableCell>
+              <TableCell>Carbs&nbsp;(g)</TableCell>
+              <TableCell>Protein&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{margin: "14px"}}>
@@ -78,22 +70,12 @@ export default function BasicTable({
                   },
                 }}
               >
-                <TableCell
-                  sx={{margin: "14px"}}
-                  component="th"
-                  scope="row"
-                >
+                <TableCell sx={{margin: "14px"}} component="th" scope="row">
                   {row.companyEmail}
                 </TableCell>
-                <TableCell >
-                  {row.validTill}
-                </TableCell>
-                <TableCell >
-                  {row.organizationName}
-                </TableCell>
-                <TableCell>
-                  {row.companyId}
-                </TableCell>
+                <TableCell>{row.validTill}</TableCell>
+                <TableCell>{row.organizationName}</TableCell>
+                <TableCell>{row.companyId}</TableCell>
                 <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}

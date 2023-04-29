@@ -8,12 +8,12 @@ import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useConfirm } from "material-ui-confirm";
-import {deleteCompany} from "../../api/deleteCompany"
-import {deleteUser} from "../../api/deleteUser"
-import {displayNotification} from "../../services/notificationService"
-import {getCompany} from "../../api/getCompany"
-import {getUser} from "../../api/getUser"
+import {useConfirm} from "material-ui-confirm";
+import {deleteCompany} from "../../api/deleteCompany";
+import {deleteUser} from "../../api/deleteUser";
+import {displayNotification} from "../../services/notificationService";
+import {getCompany} from "../../api/getCompany";
+import {getUser} from "../../api/getUser";
 
 export default function BasicTable({
   handleOpen,
@@ -21,37 +21,36 @@ export default function BasicTable({
   setAction,
   pageNumber,
   setData,
-  data
+  data,
 }) {
-
-    console.log(data,"dtt")
-  const fetchData=async()=>{
+  console.log(data, "dtt");
+  const fetchData = async () => {
     const data = await getUser(pageNumber);
-    setData(data)
-  }
+    setData(data);
+  };
 
   const confirm = useConfirm();
 
-  const handleDelete=async(id)=>{
-    console.log(id,"id")
-    try{
-        const response=await deleteUser(id)
-    if(response.status>="200"||response.status<"300"){
-      fetchData()
-      return displayNotification("info","Successfully Deleted")
+  const handleDelete = async id => {
+    console.log(id, "id");
+    try {
+      const response = await deleteUser(id);
+      if (response.status >= "200" || response.status < "300") {
+        fetchData();
+        return displayNotification("info", "Successfully Deleted");
+      }
+    } catch (err) {
+      console.log(err, "err");
     }
-    }catch(err){
-        console.log(err,"err")
-    }
-  }
+  };
 
-  const handleConfirm = (id) => {
-    confirm({ description: `Are you sure want to delete this User` })
+  const handleConfirm = id => {
+    confirm({description: `Are you sure want to delete this User`})
       .then(() => {
-        handleDelete(id)
+        handleDelete(id);
       })
       .catch(() => console.log("Deletion cancelled."));
-  }
+  };
 
   return (
     <div>
@@ -64,18 +63,10 @@ export default function BasicTable({
             <TableRow>
               <TableCell>Dessert (100g serving)</TableCell>
               <TableCell>Calories</TableCell>
-              <TableCell>
-                Fat&nbsp;(g)
-              </TableCell>
-              <TableCell>
-                Carbs&nbsp;(g)
-              </TableCell>
-              <TableCell>
-                Carbs&nbsp;(g)
-              </TableCell>
-              <TableCell>
-                Protein&nbsp;(g)
-              </TableCell>
+              <TableCell>Fat&nbsp;(g)</TableCell>
+              <TableCell>Carbs&nbsp;(g)</TableCell>
+              <TableCell>Carbs&nbsp;(g)</TableCell>
+              <TableCell>Protein&nbsp;(g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{margin: "14px"}}>
@@ -88,25 +79,13 @@ export default function BasicTable({
                   },
                 }}
               >
-                <TableCell
-                  sx={{margin: "14px"}}
-                  component="th"
-                  scope="row"
-                >
+                <TableCell sx={{margin: "14px"}} component="th" scope="row">
                   {row.last_name}
                 </TableCell>
-                <TableCell >
-                  {row.email}
-                </TableCell>
-                <TableCell >
-                  {row.phone}
-                </TableCell>
-                <TableCell>
-                  {row.company_name}
-                </TableCell>
-                <TableCell>
-                  {row.user_state}
-                </TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell>{row.phone}</TableCell>
+                <TableCell>{row.company_name}</TableCell>
+                <TableCell>{row.user_state}</TableCell>
                 <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}

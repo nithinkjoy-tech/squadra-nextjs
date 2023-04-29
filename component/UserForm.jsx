@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import Modal from "@mui/material/Modal";
 import {
   TextField,
@@ -15,9 +15,9 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import {displayNotification} from "../services/notificationService";
-import {addUser} from "../api/addUser"
-import {getUser} from "../api/getUser"
-import {editUser} from "../api/editUser"
+import {addUser} from "../api/addUser";
+import {getUser} from "../api/getUser";
+import {editUser} from "../api/editUser";
 
 const schema = Yup.object().shape({
   first_name: Yup.string()
@@ -32,10 +32,7 @@ const schema = Yup.object().shape({
     .label("Last Name"),
   email: Yup.string()
     .required()
-    .matches(
-      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-      "Should be a valid email"
-    )
+    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Should be a valid email")
     .label("Company Email"),
   phone: Yup.string()
     .required()
@@ -71,13 +68,12 @@ export default function CompanyForm({
   action,
   setData,
   data,
-  pageNumber=1
+  pageNumber = 1,
 }) {
-
-  const fetchData=async()=>{
+  const fetchData = async () => {
     const data = await getUser(pageNumber);
-    setData(data)
-  }
+    setData(data);
+  };
 
   const {
     handleSubmit,
@@ -100,64 +96,67 @@ export default function CompanyForm({
     },
   });
 
-  useEffect(()=>{
-    if(action=="Add"){
-      reset()
+  useEffect(() => {
+    if (action == "Add") {
+      reset();
     }
-    reset(editFormData)
-  },[editFormData])
+    reset(editFormData);
+  }, [editFormData]);
 
-  const submit = async(data) => {
+  const submit = async data => {
     // data.validTill=dayjs(data.validTill).format('DD/MM/YYYY')
     console.log(data, "lll");
-    if(action=="Add"){
-      if(data.user_state=="Active"){
-        data.user_state=true
-      }else{
-        data.user_state=false
+    if (action == "Add") {
+      if (data.user_state == "Active") {
+        data.user_state = true;
+      } else {
+        data.user_state = false;
       }
-      try{
-        const response=await addUser(data)
-        console.log(response)
-        if(response.status>="200"&&response.status<="300"){
+      try {
+        const response = await addUser(data);
+        console.log(response);
+        if (response.status >= "200" && response.status <= "300") {
           displayNotification("info", "Successfully Added");
-          fetchData()
-          handleClose()
-        }else{
-          displayNotification("error", response?.response?.data?.message||"Something went Wrong");
+          fetchData();
+          handleClose();
+        } else {
+          displayNotification(
+            "error",
+            response?.response?.data?.error?.message || "Something went Wrong"
+          );
         }
-      }catch(err){
-        console.log(err,"er")
+      } catch (err) {
+        console.log(err, "er");
         displayNotification("error", "Something went Wrong");
       }
     }
 
-    if(action=="Edit"){
-      console.log(data.userId,"uid")
-      try{
-        if(data.user_state=="Active"){
-          data.user_state=true
-        }else{
-          data.user_state=false
+    if (action == "Edit") {
+      console.log(data.userId, "uid");
+      try {
+        if (data.user_state == "Active") {
+          data.user_state = true;
+        } else {
+          data.user_state = false;
         }
-        const response=await editUser(data.userId,data)
-        if(response.status>="200"||response.status<"300"){
+        const response = await editUser(data.userId, data);
+        if (response.status >= "200" || response.status < "300") {
           displayNotification("info", "Successfully Edited");
-          fetchData()
-          handleClose()
-        }else{
+          fetchData();
+          handleClose();
+        } else {
           displayNotification("error", "Something went Wrong");
         }
-      }catch(err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-   }
+    }
 
-   if(action=="Filter"){
-    const response=await filterUser(data)
-    setData(response.data)
-    handleClose()
- }
+    if (action == "Filter") {
+      const response = await filterUser(data);
+      setData(response.data);
+      handleClose();
+    }
   };
 
   const inputBoxStyles = {
@@ -191,17 +190,12 @@ export default function CompanyForm({
                   color: "blue",
                 }}
               >
-                {selectedDomain == "Companies" &&
-                  `${action} Company`}
-                {selectedDomain == "Users" &&
-                  `${action} Users`}
+                {selectedDomain == "Companies" && `${action} Company`}
+                {selectedDomain == "Users" && `${action} Users`}
               </Typography>
               <div>
                 {action === "Filter" && (
-                  <Button
-                    variant="outlined"
-                    onClick={() => reset()}
-                  >
+                  <Button variant="outlined" onClick={() => reset()}>
                     Clear
                   </Button>
                 )}
@@ -233,10 +227,7 @@ export default function CompanyForm({
                   error={errors.first_name ? true : false}
                 />
                 {errors.first_name && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.first_name?.message}
                   </FormHelperText>
                 )}
@@ -253,10 +244,7 @@ export default function CompanyForm({
                   error={errors.last_name ? true : false}
                 />
                 {errors.last_name && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.last_name?.message}
                   </FormHelperText>
                 )}
@@ -273,10 +261,7 @@ export default function CompanyForm({
                   error={errors.email ? true : false}
                 />
                 {errors.email && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.email?.message}
                   </FormHelperText>
                 )}
@@ -293,10 +278,7 @@ export default function CompanyForm({
                   error={errors.phone ? true : false}
                 />
                 {errors.phone && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.phone?.message}
                   </FormHelperText>
                 )}
@@ -308,11 +290,7 @@ export default function CompanyForm({
                   id="role-select"
                   value={getValues("user_state")}
                   onChange={event => {
-                    setValue(
-                      "user_state",
-                      event.target.value,
-                      true
-                    );
+                    setValue("user_state", event.target.value, true);
                     clearErrors("user_state");
                   }}
                   sx={inputBoxStyles}
@@ -321,16 +299,12 @@ export default function CompanyForm({
                   <MenuItem key="inactive" value={"Inactive"}>
                     Inactive
                   </MenuItem>
-                  <MenuItem key="active"
-                   value={"Active"}>
+                  <MenuItem key="active" value={"Active"}>
                     Active
                   </MenuItem>
                 </Select>
                 {errors.user_state && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.user_state?.message}
                   </FormHelperText>
                 )}
@@ -346,20 +320,13 @@ export default function CompanyForm({
                   error={errors.company_name ? true : false}
                 />
                 {errors.company_name && (
-                  <FormHelperText
-                    error={true}
-                    id="outlined-weight-helper-text"
-                  >
+                  <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.company_name?.message}
                   </FormHelperText>
                 )}
               </div>
             </div>
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{marginTop: "1rem"}}
-            >
+            <Button variant="contained" type="submit" sx={{marginTop: "1rem"}}>
               {action == "Add" && `ADD`}
               {action == "Edit" && `Update`}
               {action == "Filter" && `Continue`}
