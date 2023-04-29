@@ -18,6 +18,7 @@ import {displayNotification} from "../services/notificationService";
 import {addUser} from "../api/addUser";
 import {getUser} from "../api/getUser";
 import {editUser} from "../api/editUser";
+import {filterUser} from "@/api/filterUser";
 
 const schema = Yup.object().shape({
   first_name: Yup.string()
@@ -71,8 +72,12 @@ export default function CompanyForm({
   pageNumber = 1,
 }) {
   const fetchData = async () => {
-    const data = await getUser(pageNumber);
+    try{
+      const data = await getUser(pageNumber);
     setData(data);
+    }catch(err){
+      displayNotification("error","Something went wrong")
+    }
   };
 
   const {
@@ -101,7 +106,7 @@ export default function CompanyForm({
       reset();
     }
     reset(editFormData);
-  }, [editFormData,action]);
+  }, [editFormData, action]);
 
   const submit = async data => {
     console.log(data, "lll");
@@ -131,7 +136,6 @@ export default function CompanyForm({
     }
 
     if (action == "Edit") {
-      console.log(data.userId, "uid");
       try {
         if (data.user_state == "Active") {
           data.user_state = true;
@@ -152,9 +156,13 @@ export default function CompanyForm({
     }
 
     if (action == "Filter") {
-      const response = await filterUser(data);
-      setData(response.data);
-      handleClose();
+      try {
+        const response = await filterUser(data);
+        setData(response.data);
+        handleClose();
+      } catch (err) {
+        console.log(err, "filtererr");
+      }
     }
   };
 

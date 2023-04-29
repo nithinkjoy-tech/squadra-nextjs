@@ -22,17 +22,25 @@ export default function BasicTable({
   data,
 }) {
   const fetchData = async () => {
-    const data = await getCompany(pageNumber);
+    try{
+      const data = await getCompany(pageNumber);
     setData(data);
+    }catch(err){
+      displayNotification("error","Something Went Wrong")
+    }
   };
 
   const confirm = useConfirm();
 
   const handleDelete = async id => {
-    const response = await deleteCompany(id);
+    try{
+      const response = await deleteCompany(id);
     if (response.status == "200") {
       fetchData();
       return displayNotification("info", "Successfully Deleted");
+    }
+    }catch(err){
+      displayNotification("error","Something Went wrong")
     }
   };
 

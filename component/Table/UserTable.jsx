@@ -25,8 +25,13 @@ export default function BasicTable({
 }) {
   console.log(data, "dtt");
   const fetchData = async () => {
-    const data = await getUser(pageNumber);
+    try{
+      const data = await getUser(pageNumber);
     setData(data);
+    }catch(err){
+      console.log(err,"teft")
+      displayNotification("error","Something went wrong")
+    }
   };
 
   const confirm = useConfirm();
@@ -40,7 +45,8 @@ export default function BasicTable({
         return displayNotification("info", "Successfully Deleted");
       }
     } catch (err) {
-      console.log(err, "err");
+      console.log(err,"jj")
+      // displayNotification("error", "Something went wrong");
     }
   };
 

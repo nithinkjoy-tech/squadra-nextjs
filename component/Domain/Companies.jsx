@@ -5,6 +5,7 @@ import CompanyTable from "../Table/CompanyTable";
 import Pagination from "../Pagination/Pagination";
 import {ConfirmProvider} from "material-ui-confirm";
 import {getCompany} from "../../api/getCompany";
+import {displayNotification} from "../../services/notificationService"
 
 const Companies = ({
   selectedDomain,
@@ -19,8 +20,12 @@ const Companies = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    const data = await getCompany(pageNumber);
+    try{
+      const data = await getCompany(pageNumber);
     setData(data);
+    }catch(err){
+      displayNotification("error","Something went wrong")
+    }
   };
 
   useEffect(() => {

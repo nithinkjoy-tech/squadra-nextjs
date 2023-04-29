@@ -99,8 +99,12 @@ export default function CompanyForm({
   }, [editFormData]);
 
   const fetchData = async () => {
-    const data = await getCompany(pageNumber);
-    setData(data);
+    try{
+      const data = await getCompany(pageNumber);
+      setData(data);
+    }catch(err){
+      displayNotification("error","Something went Wrong")
+    }
   };
 
   const submit = async data => {
@@ -109,7 +113,7 @@ export default function CompanyForm({
       try {
         const response = await addCompany(data);
         console.log(response);
-        if (response.status == "200") {
+        if (response.status >= "200"||response.status <= "300") {
           displayNotification("info", "Successfully Added");
           fetchData();
           handleClose();
@@ -122,20 +126,26 @@ export default function CompanyForm({
     }
 
     if (action == "Edit") {
-      const response = await editCompany(data.id, data);
-      if (response.status == "200") {
+      try{
+        const response = await editCompany(data.id, data);
+      if (response.status >= "200"||response.status<="300") {
         displayNotification("info", "Successfully Edited");
         fetchData();
         handleClose();
-      } else {
-        displayNotification("error", "Something went Wrong");
+      } 
+      }catch(err){
+        displayNotification("error","Something went Wrong")
       }
     }
 
     if (action == "Filter") {
-      const response = await filterCompany(data);
+      try{
+        const response = await filterCompany(data);
       setData(response.data);
       handleClose();
+      }catch(err){
+        displayNotification("error","Something Went Wrong")
+      }
     }
   };
 
