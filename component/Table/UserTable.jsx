@@ -66,7 +66,7 @@ export default function BasicTable({
               <TableCell>Phone Number</TableCell>
               <TableCell>Company Name</TableCell>
               <TableCell>User State</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -80,7 +80,7 @@ export default function BasicTable({
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.phone}</TableCell>
                 <TableCell>{row.company_name}</TableCell>
-                <TableCell>{row.user_state}</TableCell>
+                <TableCell>{row.user_state?"Active":"Inactive"}</TableCell>
                 <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}

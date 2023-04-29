@@ -58,7 +58,7 @@ const Users = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      <Pagination count={data.totalPages} setPageNumber={setPageNumber} />
+      <Pagination count={Number(data.totalPages)-1} setPageNumber={setPageNumber} />
     </React.Fragment>
   );
 };
