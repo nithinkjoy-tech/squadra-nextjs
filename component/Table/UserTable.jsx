@@ -75,7 +75,7 @@ export default function BasicTable({
                 key={index}
               >
                 <TableCell sx={{margin: "14px"}} component="th" scope="row">
-                  {row.last_name+" "+row.last_name}
+                  {row.first_name+" "+row.last_name}
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.phone}</TableCell>
