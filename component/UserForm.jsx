@@ -117,10 +117,12 @@ export default function CompanyForm({
       try {
         const response = await addUser(data);
         if (response.status >= "200" && response.status <= "300") {
+          reset()
           displayNotification("info", "Successfully Added");
           fetchData();
           handleClose();
         } else {
+          reset()
           displayNotification(
             "error",
             response?.response?.data?.error?.message || "Could not add user to database"
@@ -140,10 +142,12 @@ export default function CompanyForm({
         }
         const response = await editUser(data.userId, data);
         if (response.status >= "200" || response.status < "300") {
+          reset()
           displayNotification("info", "Successfully Edited");
           fetchData();
           handleClose();
         } else {
+          reset()
           displayNotification("error", "Could not edit user data");
         }
       } catch (err) {
