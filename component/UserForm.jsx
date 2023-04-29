@@ -153,10 +153,16 @@ export default function CompanyForm({
 
     if (action == "Filter") {
       try {
+        if(data.user_state=="Active"){
+          data.user_state=true
+        }else{
+          data.user_state=false
+        }
         const response = await filterUser(data);
         setData(response.data);
         handleClose();
       } catch (err) {
+        console.log(err)
         displayNotification("error", "Could not filter");
       }
     }
