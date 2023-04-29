@@ -162,7 +162,6 @@ export default function CompanyForm({
         setData(response.data);
         handleClose();
       } catch (err) {
-        console.log(err)
         displayNotification("error", "Could not filter");
       }
     }
