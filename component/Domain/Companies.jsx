@@ -24,7 +24,7 @@ const Companies = ({
       const data = await getCompany(pageNumber);
       setData(data);
     } catch (err) {
-      displayNotification("error", "Something went wrong");
+      displayNotification("error", "Could not get company data");
     }
   };
 

@@ -26,7 +26,7 @@ export default function BasicTable({
       const data = await getCompany(pageNumber);
       setData(data);
     } catch (err) {
-      displayNotification("error", "Something Went Wrong");
+      displayNotification("error", "Could not fetch data");
     }
   };
 
@@ -40,7 +40,7 @@ export default function BasicTable({
         return displayNotification("info", "Successfully Deleted");
       }
     } catch (err) {
-      displayNotification("error", "Something Went wrong");
+      displayNotification("error", "Could not delete data");
     }
   };
 

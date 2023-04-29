@@ -75,7 +75,7 @@ export default function CompanyForm({
       const data = await getUser(pageNumber);
       setData(data);
     } catch (err) {
-      displayNotification("error", "Something went wrong");
+      displayNotification("error", "Could not get user data");
     }
   };
 
@@ -123,11 +123,11 @@ export default function CompanyForm({
         } else {
           displayNotification(
             "error",
-            response?.response?.data?.error?.message || "Something went Wrong"
+            response?.response?.data?.error?.message || "Could not add user to database"
           );
         }
       } catch (err) {
-        displayNotification("error", "Something went Wrong");
+        displayNotification("error", "Could not add user to database");
       }
     }
 
@@ -144,10 +144,10 @@ export default function CompanyForm({
           fetchData();
           handleClose();
         } else {
-          displayNotification("error", "Something went Wrong");
+          displayNotification("error", "Could not edit user data");
         }
       } catch (err) {
-        displayNotification("error", "Something went Wrong");
+        displayNotification("error", "Could not edit user data");
       }
     }
 

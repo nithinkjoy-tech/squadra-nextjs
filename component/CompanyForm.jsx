@@ -102,7 +102,7 @@ export default function CompanyForm({
       const data = await getCompany(pageNumber);
       setData(data);
     } catch (err) {
-      displayNotification("error", "Something went Wrong");
+      displayNotification("error", "Could not fetch data");
     }
   };
 
@@ -116,10 +116,10 @@ export default function CompanyForm({
           fetchData();
           handleClose();
         } else {
-          displayNotification("error", "Something went Wrong");
+          displayNotification("error", "Could not add company to database");
         }
       } catch (err) {
-        displayNotification("error", "Something went Wrong");
+        displayNotification("error", "Could not add company to database");
       }
     }
 
@@ -132,7 +132,7 @@ export default function CompanyForm({
           handleClose();
         }
       } catch (err) {
-        displayNotification("error", "Something went Wrong");
+        displayNotification("error", "Could not edit company data");
       }
     }
 
@@ -142,7 +142,7 @@ export default function CompanyForm({
         setData(response.data);
         handleClose();
       } catch (err) {
-        displayNotification("error", "Something Went Wrong");
+        displayNotification("error", "Could not apply filter");
       }
     }
   };
