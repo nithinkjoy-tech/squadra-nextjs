@@ -61,26 +61,21 @@ export default function BasicTable({
         >
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell>Calories</TableCell>
-              <TableCell>Fat&nbsp;(g)</TableCell>
-              <TableCell>Carbs&nbsp;(g)</TableCell>
-              <TableCell>Carbs&nbsp;(g)</TableCell>
-              <TableCell>Protein&nbsp;(g)</TableCell>
+              <TableCell>Full Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Phone Number</TableCell>
+              <TableCell>Company Name</TableCell>
+              <TableCell>User State</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody sx={{margin: "14px"}}>
-            {data?.user?.map(row => (
+          <TableBody>
+            {data?.user?.map((row,index) => (
               <TableRow
-                key={row.first_name}
-                sx={{
-                  "&:last-child td, &:last-child th": {
-                    border: 0,
-                  },
-                }}
+                key={index}
               >
                 <TableCell sx={{margin: "14px"}} component="th" scope="row">
-                  {row.last_name}
+                  {row.last_name+" "+row.last_name}
                 </TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>{row.phone}</TableCell>

@@ -48,29 +48,27 @@ export default function BasicTable({
     <div>
       <TableContainer component={Paper}>
         <Table
-          // sx={{minWidth: 650, margin: "10px"}}
           aria-label="simple table"
         >
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell>Calories</TableCell>
-              <TableCell>Fat&nbsp;(g)</TableCell>
-              <TableCell>Carbs&nbsp;(g)</TableCell>
-              <TableCell>Protein&nbsp;(g)</TableCell>
+              <TableCell>Company Name</TableCell>
+              <TableCell>Company Email</TableCell>
+              <TableCell>Valid Till</TableCell>
+              <TableCell>Organization Name</TableCell>
+              <TableCell>Company ID</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody sx={{margin: "14px"}}>
-            {data?.content?.map(row => (
+          <TableBody>
+            {data?.content?.map((row,index) => (
               <TableRow
-                key={row.companyName}
-                sx={{
-                  "&:last-child td, &:last-child th": {
-                    border: 0,
-                  },
-                }}
+                key={index}
               >
-                <TableCell sx={{margin: "14px"}} component="th" scope="row">
+                <TableCell>
+                  {row.companyName}
+                </TableCell>
+                <TableCell>
                   {row.companyEmail}
                 </TableCell>
                 <TableCell>{row.validTill}</TableCell>

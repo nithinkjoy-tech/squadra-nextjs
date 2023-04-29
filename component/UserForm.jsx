@@ -104,7 +104,6 @@ export default function CompanyForm({
   }, [editFormData]);
 
   const submit = async data => {
-    // data.validTill=dayjs(data.validTill).format('DD/MM/YYYY')
     console.log(data, "lll");
     if (action == "Add") {
       if (data.user_state == "Active") {
