@@ -8,12 +8,12 @@ import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] =useState("Companies");
-  const [editFormData,setEditFormData]=useState(null)
+  const [selectedDomain, setSelectedDomain] = useState("Companies");
+  const [editFormData, setEditFormData] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
   const [data, setData] = useState(0);
-  const [pageNumber,setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,7 +33,17 @@ export default function Home() {
         <Grid item md={10}>
           {selectedDomain == "Companies" && (
             <>
-              <CompanyForm setPageNumber={setPageNumber} pageNumber={pageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} setEditFormData={setEditFormData} open={open} handleClose={handleClose} />
+              <CompanyForm
+                setPageNumber={setPageNumber}
+                pageNumber={pageNumber}
+                setData={setData}
+                selectedDomain={selectedDomain}
+                action={action}
+                editFormData={editFormData}
+                setEditFormData={setEditFormData}
+                open={open}
+                handleClose={handleClose}
+              />
               <Companies
                 data={data}
                 setPageNumber={setPageNumber}
@@ -50,17 +60,27 @@ export default function Home() {
           )}
           {selectedDomain == "Users" && (
             <>
-              <UserForm setData={setData} selectedDomain={selectedDomain} action={action} setEditFormData={setEditFormData} editFormData={editFormData} open={open} handleClose={handleClose} />
-              <Users setAction={setAction}
-              data={data}
-              setData={setData}
-              open={open}
-              handleOpen={handleOpen}
-              handleClose={handleClose}
-              pageNumber={pageNumber}
-              setPageNumber={setPageNumber}
-              selectedDomain={selectedDomain}
-              setEditFormData={setEditFormData} />
+              <UserForm
+                setData={setData}
+                selectedDomain={selectedDomain}
+                action={action}
+                setEditFormData={setEditFormData}
+                editFormData={editFormData}
+                open={open}
+                handleClose={handleClose}
+              />
+              <Users
+                setAction={setAction}
+                data={data}
+                setData={setData}
+                open={open}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                pageNumber={pageNumber}
+                setPageNumber={setPageNumber}
+                selectedDomain={selectedDomain}
+                setEditFormData={setEditFormData}
+              />
             </>
           )}
         </Grid>
