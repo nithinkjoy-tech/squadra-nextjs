@@ -1,5 +1,8 @@
 import React, {useEffect} from "react";
 import Modal from "@mui/material/Modal";
+import * as Yup from "yup";
+import CloseIcon from "@mui/icons-material/Close";
+import InputLabel from "@mui/material/InputLabel";
 import {
   TextField,
   Button,
@@ -10,10 +13,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import {useForm} from "react-hook-form";
-import * as Yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import CloseIcon from "@mui/icons-material/Close";
-import InputLabel from "@mui/material/InputLabel";
 import {displayNotification} from "../services/notificationService";
 import {addUser} from "../api/addUser";
 import {getUser} from "../api/getUser";
@@ -300,7 +300,7 @@ export default function CompanyForm({
                 <Select
                   labelId="role-select-label"
                   id="role-select"
-                  value={getValues("user_state")}
+                  value={getValues("user_state")?"Active":"Inactive"}
                   onChange={event => {
                     setValue("user_state", event.target.value, true);
                     clearErrors("user_state");
