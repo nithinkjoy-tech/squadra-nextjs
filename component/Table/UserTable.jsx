@@ -83,6 +83,7 @@ export default function BasicTable({
                     style={{cursor: "pointer"}}
                     onClick={() => {
                       handleOpen();
+                      row.user_state=row?.user_state?"Active":"Inactive"
                       setEditFormData(row);
                       setAction("Edit");
                     }}

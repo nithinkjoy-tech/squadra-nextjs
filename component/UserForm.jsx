@@ -300,7 +300,7 @@ export default function CompanyForm({
                 <Select
                   labelId="role-select-label"
                   id="role-select"
-                  value={getValues("user_state")?"Active":"Inactive"}
+                  value={getValues("user_state")}
                   onChange={event => {
                     setValue("user_state", event.target.value, true);
                     clearErrors("user_state");
