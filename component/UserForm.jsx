@@ -118,18 +118,21 @@ export default function UserForm({
       try {
         const response = await addUser(data);
         if (response.status >= "200" && response.status <= "300") {
-          reset()
+          reset();
           displayNotification("info", "Successfully Added");
           fetchData();
           handleClose();
         } else {
           displayNotification(
             "error",
-            response?.response?.data?.error?.message || "Could not add user to database"
+            response?.response?.data?.error?.message ||
+              "Could not add user to database"
           );
         }
       } catch (err) {
-        displayNotification("error", "Could not add user to database");
+        if (err.response.data.status == "400")
+          displayNotification("error", err.response.data.message);
+        else displayNotification("error", "Could not add user to database");
       }
     }
 
@@ -149,12 +152,12 @@ export default function UserForm({
             phone: "",
             company_name: "",
             user_state: "",
-          })
+          });
           displayNotification("info", "Successfully Edited");
           fetchData();
           handleClose();
         } else {
-          reset()
+          reset();
           displayNotification("error", "Could not edit user data");
         }
       } catch (err) {
@@ -164,10 +167,10 @@ export default function UserForm({
 
     if (action == "Filter") {
       try {
-        if(data.user_state=="Active"){
-          data.user_state=true
-        }else{
-          data.user_state=false
+        if (data.user_state == "Active") {
+          data.user_state = true;
+        } else {
+          data.user_state = false;
         }
         const response = await filterUser(data);
         setData(response.data);
@@ -231,8 +234,8 @@ export default function UserForm({
                       phone: "",
                       company_name: "",
                       user_state: "",
-                    })
-                    handleClose()
+                    });
+                    handleClose();
                   }}
                 />
               </div>

@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useState,useEffect} from "react";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
@@ -82,7 +82,7 @@ export default function CompanyForm({
     defaultValues: {
       companyName: "",
       companyEmail: "",
-      validTill: "",
+      validTill: null,
       organizationName: "",
       companyId: "",
     },
@@ -121,6 +121,7 @@ export default function CompanyForm({
           displayNotification("error", "Could not add company to database");
         }
       } catch (err) {
+        console.log(err,"er")
         displayNotification("error", "Could not add company to database");
       }
     }
@@ -132,21 +133,22 @@ export default function CompanyForm({
           displayNotification("info", "Successfully Edited");
           fetchData();
           setEditFormData({
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: "",
-            company_name: "",
-            user_state: "",
+            companyName: "",
+            companyEmail: "",
+            validTill: null,
+            organizationName: "",
+            companyId: "",
           })
           handleClose();
         }
       } catch (err) {
+        console.log(err,"er")
         displayNotification("error", "Could not edit company data");
       }
     }
 
     if (action == "Filter") {
+      console.log(data,"fd")
       try {
         const response = await filterCompany(data);
         setData(response.data);
@@ -157,6 +159,8 @@ export default function CompanyForm({
     }
   };
 
+
+  
   const inputBoxStyles = {
     backgroundColor: "#F0EFFF",
   };
@@ -203,12 +207,11 @@ export default function CompanyForm({
                   }}
                   onClick={() => {
                     setEditFormData({
-                      first_name: "",
-                      last_name: "",
-                      email: "",
-                      phone: "",
-                      company_name: "",
-                      user_state: "",
+                      companyName: "",
+                      companyEmail: "",
+                      validTill: null,
+                      organizationName: "",
+                      companyId: "",
                     })
                     handleClose()
                   }}
@@ -265,8 +268,15 @@ export default function CompanyForm({
                       setValue("validTill", new Date(date), true);
                       clearErrors("validTill");
                     }}
-                    defaultValue={dayjs(new Date(getValues("validTill")))}
+                    sx={inputBoxStyles}
+                    value={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
+                    defaultValue={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
                     disablePast={true}
+                    slotProps={{
+                      textField: {
+                        error: false,
+                      },
+                    }}
                     format="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
