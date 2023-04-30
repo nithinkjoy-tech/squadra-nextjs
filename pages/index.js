@@ -33,7 +33,7 @@ export default function Home() {
         <Grid item md={10}>
           {selectedDomain == "Companies" && (
             <>
-              <CompanyForm setPageNumber={setPageNumber} pageNumber={pageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <CompanyForm setPageNumber={setPageNumber} pageNumber={pageNumber} setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} setEditFormData={setEditFormData} open={open} handleClose={handleClose} />
               <Companies
                 data={data}
                 setPageNumber={setPageNumber}
@@ -50,7 +50,7 @@ export default function Home() {
           )}
           {selectedDomain == "Users" && (
             <>
-              <UserForm setData={setData} selectedDomain={selectedDomain} action={action} editFormData={editFormData} open={open} handleClose={handleClose} />
+              <UserForm setData={setData} selectedDomain={selectedDomain} action={action} setEditFormData={setEditFormData} editFormData={editFormData} open={open} handleClose={handleClose} />
               <Users setAction={setAction}
               data={data}
               setData={setData}

@@ -61,10 +61,11 @@ const style = {
   p: 4,
 };
 
-export default function CompanyForm({
+export default function UserForm({
   open,
   handleClose,
   editFormData,
+  setEditFormData,
   selectedDomain,
   action,
   setData,
@@ -122,7 +123,6 @@ export default function CompanyForm({
           fetchData();
           handleClose();
         } else {
-          reset()
           displayNotification(
             "error",
             response?.response?.data?.error?.message || "Could not add user to database"
@@ -142,7 +142,14 @@ export default function CompanyForm({
         }
         const response = await editUser(data.userId, data);
         if (response.status >= "200" || response.status < "300") {
-          reset()
+          setEditFormData({
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+            company_name: "",
+            user_state: "",
+          })
           displayNotification("info", "Successfully Edited");
           fetchData();
           handleClose();
@@ -216,7 +223,17 @@ export default function CompanyForm({
                     cursor: "pointer",
                     marginLeft: "0.5rem",
                   }}
-                  onClick={() => handleClose()}
+                  onClick={() => {
+                    setEditFormData({
+                      first_name: "",
+                      last_name: "",
+                      email: "",
+                      phone: "",
+                      company_name: "",
+                      user_state: "",
+                    })
+                    handleClose()
+                  }}
                 />
               </div>
             </div>

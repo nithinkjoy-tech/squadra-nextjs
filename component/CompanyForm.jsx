@@ -62,6 +62,7 @@ export default function CompanyForm({
   open,
   handleClose,
   editFormData,
+  setEditFormData,
   selectedDomain,
   action,
   setData,
@@ -114,6 +115,7 @@ export default function CompanyForm({
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Added");
           fetchData();
+          reset()
           handleClose();
         } else {
           displayNotification("error", "Could not add company to database");
@@ -129,6 +131,14 @@ export default function CompanyForm({
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Edited");
           fetchData();
+          setEditFormData({
+            first_name: "",
+            last_name: "",
+            email: "",
+            phone: "",
+            company_name: "",
+            user_state: "",
+          })
           handleClose();
         }
       } catch (err) {
@@ -191,7 +201,17 @@ export default function CompanyForm({
                     cursor: "pointer",
                     marginLeft: "0.5rem",
                   }}
-                  onClick={() => handleClose()}
+                  onClick={() => {
+                    setEditFormData({
+                      first_name: "",
+                      last_name: "",
+                      email: "",
+                      phone: "",
+                      company_name: "",
+                      user_state: "",
+                    })
+                    handleClose()
+                  }}
                 />
               </div>
             </div>
