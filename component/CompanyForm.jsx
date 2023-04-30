@@ -159,7 +159,9 @@ export default function CompanyForm({
     }
   };
 
-
+  // const getDate=()=>{
+  //   console.log
+  // }
   
   const inputBoxStyles = {
     backgroundColor: "#F0EFFF",
@@ -269,8 +271,8 @@ export default function CompanyForm({
                       clearErrors("validTill");
                     }}
                     sx={inputBoxStyles}
-                    value={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
-                    defaultValue={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
+                    value={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):action=="Filter"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
+                    defaultValue={action=="Edit"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):action=="Filter"&&getValues("validTill")?dayjs(new Date(getValues("validTill"))):""}
                     disablePast={true}
                     slotProps={{
                       textField: {
