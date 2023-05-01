@@ -28,6 +28,7 @@ export default function Home() {
           <Sidebar
             selectedDomain={selectedDomain}
             setSelectedDomain={setSelectedDomain}
+            setPageNumber={setPageNumber}
           />
         </Grid>
         <Grid item md={10}>
