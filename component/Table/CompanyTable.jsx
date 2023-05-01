@@ -12,12 +12,15 @@ import {useConfirm} from "material-ui-confirm";
 import {deleteCompany} from "../../api/deleteCompany";
 import {displayNotification} from "../../services/notificationService";
 import {getCompany} from "../../api/getCompany";
+import {filterCompany} from "../../api/filterCompany";
 
 export default function BasicTable({
   handleOpen,
   setEditFormData,
   setAction,
+  isFilter,
   pageNumber,
+  filterData,
   setData,
   data,
 }) {
@@ -51,6 +54,8 @@ export default function BasicTable({
       })
       .catch(() => console.log("Deletion cancelled."));
   };
+
+  if(data?.content?.length==0) return <div style={{marginLeft:"10rem"}}>No Data to display</div>;
 
   return (
     <div>

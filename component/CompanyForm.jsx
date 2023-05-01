@@ -64,9 +64,14 @@ export default function CompanyForm({
   editFormData,
   setEditFormData,
   selectedDomain,
+  isFilter,
+  filterQuery,
+  setFilterQuery,
+  setIsFilter,
   action,
   setData,
   pageNumber,
+  setPageNumber
 }) {
   const {
     handleSubmit,
@@ -147,10 +152,15 @@ export default function CompanyForm({
 
     if (action == "Filter") {
       try {
+        setIsFilter(true)
+        setFilterQuery(data)
+        setPageNumber(1)
         const response = await filterCompany(data);
+        console.log(response,"filres")
         setData(response.data);
         handleClose();
       } catch (err) {
+        console.log(err,"filtererr")
         displayNotification("error", "Could not apply filter");
       }
     }

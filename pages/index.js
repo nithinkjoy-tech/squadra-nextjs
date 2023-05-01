@@ -8,12 +8,14 @@ import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] = useState("Users");
+  const [selectedDomain, setSelectedDomain] = useState("Companies");
   const [editFormData, setEditFormData] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
   const [data, setData] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [isFilter,setIsFilter]=useState(false)
+  const [filterQuery,setFilterQuery]=useState()
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -35,6 +37,10 @@ export default function Home() {
           {selectedDomain == "Companies" && (
             <>
               <CompanyForm
+                filterQuery={filterQuery}
+                setFilterQuery={setFilterQuery}
+                isFilter={isFilter}
+                setIsFilter={setIsFilter}
                 setPageNumber={setPageNumber}
                 pageNumber={pageNumber}
                 setData={setData}
@@ -46,7 +52,10 @@ export default function Home() {
                 handleClose={handleClose}
               />
               <Companies
+                isFilter={isFilter}
+                setIsFilter={setIsFilter}
                 data={data}
+                filterQuery={filterQuery}
                 setPageNumber={setPageNumber}
                 pageNumber={pageNumber}
                 setData={setData}

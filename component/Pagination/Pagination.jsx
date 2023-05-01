@@ -26,6 +26,7 @@ export default function BasicPagination({
     >
       Page No: {pageNumber}
       <Pagination
+        page={pageNumber}
         count={count}
         color="primary"
         onChange={(event, pageNumber) =>

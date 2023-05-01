@@ -52,12 +52,13 @@ export default function BasicTable({
       .catch(() => console.log("Deletion cancelled."));
   };
 
+  if (data?.user?.length == 0)
+    return <div style={{marginLeft: "10rem"}}>No Data to display</div>;
+
   return (
     <div>
       <TableContainer component={Paper}>
-        <Table
-          aria-label="simple table"
-        >
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell>Full Name</TableCell>
@@ -83,7 +84,7 @@ export default function BasicTable({
                     style={{cursor: "pointer"}}
                     onClick={() => {
                       handleOpen();
-                      row.user_state=row?.user_state?"Active":"Inactive"
+                      row.user_state = row?.user_state ? "Active" : "Inactive";
                       setEditFormData(row);
                       setAction("Edit");
                     }}
