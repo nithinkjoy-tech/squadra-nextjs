@@ -64,8 +64,6 @@ export default function CompanyForm({
   editFormData,
   setEditFormData,
   selectedDomain,
-  isFilter,
-  filterQuery,
   setFilterQuery,
   setIsFilter,
   action,
@@ -116,6 +114,9 @@ export default function CompanyForm({
     data.validTill = dayjs(data.validTill).format("YYYY-MM-DD");
     if (action == "Add") {
       try {
+        setIsFilter(false)
+        setFilterQuery()
+        setPageNumber(1)
         const response = await addCompany(data);
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Added");
@@ -156,11 +157,9 @@ export default function CompanyForm({
         setFilterQuery(data)
         setPageNumber(1)
         const response = await filterCompany(data);
-        console.log(response,"filres")
         setData(response.data);
         handleClose();
       } catch (err) {
-        console.log(err,"filtererr")
         displayNotification("error", "Could not apply filter");
       }
     }

@@ -24,15 +24,11 @@ const Companies = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    console.log(isFilter,"if")
-    console.log(filterQuery,"fd")
     if(isFilter){
       try {
         const {data} = await filterCompany(filterQuery,pageNumber-1);
-        console.log(data,"resdt")
         setData(data);
       } catch (err) {
-        console.log(err,"er")
         displayNotification("error", "Could not fetch data");
       }
     }else{

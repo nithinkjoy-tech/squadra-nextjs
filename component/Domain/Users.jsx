@@ -5,13 +5,17 @@ import Pagination from "../Pagination/Pagination";
 import {useEffect} from "react";
 import {ConfirmProvider} from "material-ui-confirm";
 import {getUser} from "../../api/getUser";
-import {displayNotification} from "../../services/notificationService"
+import {filterUser} from "../../api/filterUser";
+import {displayNotification} from "../../services/notificationService";
 
 const Users = ({
   selectedDomain,
   open,
   handleOpen,
   handleClose,
+  isFilter,
+  setIsFilter,
+  filterQuery,
   setEditFormData,
   setAction,
   data,
@@ -20,11 +24,24 @@ const Users = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    try {
-      const data = await getUser(pageNumber);
-      setData(data);
-    } catch (err) {
-      displayNotification("error","Could not fetch data");
+    console.log(isFilter,"if")
+    console.log(filterQuery,"fq")
+    if (isFilter) {
+      try {
+        const data = await filterUser(filterQuery, pageNumber);
+        console.log(data)
+        setData(data.data);
+      } catch (err) {
+        console.log(err,"er")
+        displayNotification("error", "Could not fetch data");
+      }
+    } else {
+      try {
+        const data = await getUser(pageNumber);
+        setData(data);
+      } catch (err) {
+        displayNotification("error", "Could not fetch data");
+      }
     }
   };
 
@@ -43,6 +60,8 @@ const Users = ({
       />
       <ConfirmProvider>
         <UserTable
+          isFilter={isFilter}
+          setIsFilter={setIsFilter}
           data={data}
           setData={setData}
           setAction={setAction}
@@ -53,11 +72,13 @@ const Users = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      <Pagination
-        count={Number(data.totalPages) - 1}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-      />
+      {data.totalPages > 1 && (
+        <Pagination
+          count={Number(data.totalPages) - 1}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
+      )}
     </React.Fragment>
   );
 };

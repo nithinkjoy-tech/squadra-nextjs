@@ -69,6 +69,9 @@ export default function UserForm({
   selectedDomain,
   action,
   setData,
+  setFilterQuery,
+  setIsFilter,
+  setPageNumber,
   pageNumber = 1,
 }) {
   const fetchData = async () => {
@@ -110,6 +113,9 @@ export default function UserForm({
 
   const submit = async data => {
     if (action == "Add") {
+      setIsFilter(false);
+      setFilterQuery();
+      setPageNumber(1);
       if (data.user_state == "Active") {
         data.user_state = true;
       } else {
@@ -169,15 +175,20 @@ export default function UserForm({
       try {
         if (data.user_state == "Active") {
           data.user_state = true;
-        } else if(data.user_state == "Inactive")  {
+        } else if (data.user_state == "Inactive") {
           data.user_state = false;
-        }else{
-          data.user_state=""
+        } else {
+          data.user_state = "";
         }
+        setIsFilter(true);
+        setFilterQuery(data);
+        setPageNumber(1);
         const response = await filterUser(data);
+        console.log(response,"res");
         setData(response.data);
         handleClose();
       } catch (err) {
+        console.log(err,"rer")
         displayNotification("error", "Could not filter");
       }
     }
