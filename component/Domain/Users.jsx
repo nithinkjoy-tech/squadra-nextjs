@@ -55,6 +55,7 @@ const Users = ({
       </ConfirmProvider>
       <Pagination
         count={Number(data.totalPages) - 1}
+        pageNumber={pageNumber}
         setPageNumber={setPageNumber}
       />
     </React.Fragment>

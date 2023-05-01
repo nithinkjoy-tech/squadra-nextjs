@@ -54,7 +54,7 @@ const Companies = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      <Pagination count={data.totalPages} setPageNumber={setPageNumber} />
+      <Pagination count={data.totalPages} pageNumber={pageNumber} setPageNumber={setPageNumber} />
     </React.Fragment>
   );
 };

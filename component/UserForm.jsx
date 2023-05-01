@@ -169,8 +169,10 @@ export default function UserForm({
       try {
         if (data.user_state == "Active") {
           data.user_state = true;
-        } else {
+        } else if(data.user_state == "Inactive")  {
           data.user_state = false;
+        }else{
+          data.user_state=""
         }
         const response = await filterUser(data);
         setData(response.data);

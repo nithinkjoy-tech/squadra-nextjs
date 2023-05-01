@@ -4,8 +4,11 @@ import Stack from "@mui/material/Stack";
 
 export default function BasicPagination({
   count,
+  pageNumber,
   setPageNumber,
 }) {
+  if(Object.is(count,NaN)) return;
+
   const handlePageChange = pageNumber => {
     setPageNumber(pageNumber);
   };
@@ -16,10 +19,12 @@ export default function BasicPagination({
       sx={{
         marginTop: "5rem",
         display: "flex",
-        justifyContent: "center",
+        flexDirection:"row",
+        justifyContent: "space-around",
         alignItems: "center",
       }}
     >
+      Page No: {pageNumber}
       <Pagination
         count={count}
         color="primary"
@@ -27,6 +32,7 @@ export default function BasicPagination({
           handlePageChange(pageNumber)
         }
       />
+      <div style={{width:"20%"}}></div>
     </Stack>
   );
 }
