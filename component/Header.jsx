@@ -2,9 +2,10 @@ import React from "react";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import {Typography, Button, Grid} from "@mui/material";
 
+
 export default function Header({selectedDomain, handleOpen, setAction}) {
   return (
-    <Grid container sx={{margin: 5}}>
+    <Grid container sx={{marginLeft: "5px",marginTop:"0.2rem"}}>
       <Grid item xs={8}>
         <Typography
           variant="subtitle1"
@@ -52,9 +53,11 @@ export default function Header({selectedDomain, handleOpen, setAction}) {
               <FilterAltIcon />
               Filters
             </Button>
+            
           </Grid>
         </Grid>
       </Grid>
+      
     </Grid>
   );
 }

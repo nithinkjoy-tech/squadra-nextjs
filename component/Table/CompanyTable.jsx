@@ -13,6 +13,7 @@ import {deleteCompany} from "../../api/deleteCompany";
 import {displayNotification} from "../../services/notificationService";
 import {getCompany} from "../../api/getCompany";
 import {filterCompany} from "../../api/filterCompany";
+import Divider from '@mui/material/Divider';
 
 export default function BasicTable({
   handleOpen,
@@ -58,22 +59,24 @@ export default function BasicTable({
   if(data?.content?.length==0) return <div style={{marginLeft:"10rem"}}>No Data to display</div>;
 
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
+    <div style={{marginTop:"1rem"}}>
+      <Divider/>
+      <TableContainer>
+        <Table style={{borderCollapse: "separate",
+            borderSpacing: "0px 1rem"}} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Company Name</TableCell>
-              <TableCell>Company Email</TableCell>
-              <TableCell>Valid Till</TableCell>
-              <TableCell>Organization Name</TableCell>
-              <TableCell>Company ID</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Company Name</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Company Email</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Valid Till</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Organization Name</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Company ID</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data?.content?.map((row, index) => (
-              <TableRow key={index}>
+              <TableRow sx={{backgroundColor:"#F0EFFF"}} key={index}>
                 <TableCell>{row.companyName}</TableCell>
                 <TableCell>{row.companyEmail}</TableCell>
                 <TableCell>{row.validTill}</TableCell>

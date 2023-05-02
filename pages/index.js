@@ -33,7 +33,7 @@ export default function Home() {
             setPageNumber={setPageNumber}
           />
         </Grid>
-        <Grid item md={10}>
+        <Grid item md={9}>
           {selectedDomain == "Companies" && (
             <>
               <CompanyForm
