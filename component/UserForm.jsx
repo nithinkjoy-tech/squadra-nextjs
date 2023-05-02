@@ -3,6 +3,7 @@ import Modal from "@mui/material/Modal";
 import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
+import CustomTextField from "./CustomTextField"
 import {
   TextField,
   Button,
@@ -12,7 +13,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import {useForm} from "react-hook-form";
+import {useForm,FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {displayNotification} from "../services/notificationService";
 import {addUser} from "../api/addUser";
@@ -198,6 +199,7 @@ export default function UserForm({
   };
 
   return (
+    <FormProvider register={register} >
     <div>
       <Modal
         open={open}
@@ -259,73 +261,26 @@ export default function UserForm({
                 gap: "10px",
               }}
             >
-              <div>
-                <InputLabel>First Name</InputLabel>
-                <TextField
-                  id="first_name"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("first_name")}
-                  error={errors.first_name ? true : false}
-                />
-                {errors.first_name && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.first_name?.message}
-                  </FormHelperText>
-                )}
-              </div>
-
-              <div>
-                <InputLabel>Last Name</InputLabel>
-                <TextField
-                  id="last_name"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("last_name")}
-                  error={errors.last_name ? true : false}
-                />
-                {errors.last_name && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.last_name?.message}
-                  </FormHelperText>
-                )}
-              </div>
-
-              <div>
-                <InputLabel>Email ID</InputLabel>
-                <TextField
-                  id="email"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("email")}
-                  error={errors.email ? true : false}
-                />
-                {errors.email && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.email?.message}
-                  </FormHelperText>
-                )}
-              </div>
-
-              <div>
-                <InputLabel>Phone Number</InputLabel>
-                <TextField
-                  id="phone"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("phone")}
-                  error={errors.phone ? true : false}
-                />
-                {errors.phone && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.phone?.message}
-                  </FormHelperText>
-                )}
-              </div>
+              <CustomTextField
+                label="First Name"
+                name="first_name"
+                errors={errors}
+              />
+              <CustomTextField
+                label="Last Name"
+                name="last_name"
+                errors={errors}
+              />
+              <CustomTextField
+                label="Email ID"
+                name="email"
+                errors={errors}
+              />
+              <CustomTextField
+                label="Phone Number"
+                name="phone"
+                errors={errors}
+              />
               <div>
                 <InputLabel>User State</InputLabel>
                 <Select
@@ -352,22 +307,11 @@ export default function UserForm({
                   </FormHelperText>
                 )}
               </div>
-              <div>
-                <InputLabel>Company Name</InputLabel>
-                <TextField
-                  id="company_name"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("company_name")}
-                  error={errors.company_name ? true : false}
-                />
-                {errors.company_name && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.company_name?.message}
-                  </FormHelperText>
-                )}
-              </div>
+              <CustomTextField
+                label="Company Name"
+                name="company_name"
+                errors={errors}
+              />
             </div>
             <Button variant="contained" type="submit" sx={{marginTop: "1rem"}}>
               {action == "Add" && `ADD`}
@@ -378,5 +322,6 @@ export default function UserForm({
         </Box>
       </Modal>
     </div>
+    </FormProvider>
   );
 }

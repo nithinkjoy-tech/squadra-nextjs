@@ -3,6 +3,7 @@ import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import dayjs from "dayjs";
+import CustomTextField from "./CustomTextField"
 import * as Yup from "yup";
 import {
   TextField,
@@ -11,7 +12,7 @@ import {
   Typography,
   FormHelperText,
 } from "@mui/material";
-import {useForm} from "react-hook-form";
+import {useForm,FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -178,6 +179,7 @@ export default function CompanyForm({
   };
 
   return (
+    <FormProvider register={register} >
     <div>
       <Modal
         open={open}
@@ -238,40 +240,16 @@ export default function CompanyForm({
                 gap: "10px",
               }}
             >
-              <div>
-                <InputLabel>Company Name</InputLabel>
-                <TextField
-                  id="companyName"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("companyName")}
-                  error={errors.companyName ? true : false}
-                />
-                {errors.companyName && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.companyName?.message}
-                  </FormHelperText>
-                )}
-              </div>
-
-              <div>
-                <InputLabel>Company&apos;s Email ID</InputLabel>
-                <TextField
-                  id="companyEmail"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("companyEmail")}
-                  error={errors.companyEmail ? true : false}
-                />
-                {errors.companyEmail && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.companyEmail?.message}
-                  </FormHelperText>
-                )}
-              </div>
-
+              <CustomTextField
+                label="Company Name"
+                name="companyName"
+                errors={errors}
+              />
+              <CustomTextField
+                label="Company's Email ID"
+                name="companyEmail"
+                errors={errors}
+              />
               <div>
                 <InputLabel>Valid Till</InputLabel>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -292,47 +270,23 @@ export default function CompanyForm({
                     format="DD/MM/YYYY"
                   />
                 </LocalizationProvider>
-
                 {errors.validTill && (
                   <FormHelperText error={true} id="outlined-weight-helper-text">
                     {errors?.validTill?.message}
                   </FormHelperText>
                 )}
               </div>
-
-              <div>
-                <InputLabel>Organisation Name</InputLabel>
-                <TextField
-                  id="organizationName"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  placeholder=""
-                  {...register("organizationName")}
-                  error={errors.organizationName ? true : false}
-                />
-                {errors.organizationName && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.organizationName?.message}
-                  </FormHelperText>
-                )}
-              </div>
-              <div>
-                <InputLabel>Company ID</InputLabel>
-                <TextField
-                  id="companyId"
-                  fullWidth
-                  sx={inputBoxStyles}
-                  disabled={action=="Edit"}
-                  placeholder=""
-                  {...register("companyId")}
-                  error={errors.companyId ? true : false}
-                />
-                {errors.companyId && (
-                  <FormHelperText error={true} id="outlined-weight-helper-text">
-                    {errors?.companyId?.message}
-                  </FormHelperText>
-                )}
-              </div>
+              <CustomTextField
+                label="Organisation Name"
+                name="organizationName"
+                errors={errors}
+              />
+              <CustomTextField
+                label="Company ID"
+                name="companyId"
+                errors={errors}
+                disabled={action=="Edit"}
+              />
             </div>
             <Button variant="contained" type="submit" sx={{marginTop: "1rem"}}>
               {action == "Add" && `ADD`}
@@ -343,5 +297,6 @@ export default function CompanyForm({
         </Box>
       </Modal>
     </div>
+    </FormProvider>
   );
 }
