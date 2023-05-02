@@ -92,6 +92,7 @@ export default function UserForm({
     getValues,
     clearErrors,
     reset,
+    setError
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
@@ -117,6 +118,7 @@ export default function UserForm({
       setIsFilter(false);
       setFilterQuery();
       setPageNumber(1);
+      clearErrors()
       if (data.user_state == "Active") {
         data.user_state = true;
       } else {
@@ -137,9 +139,11 @@ export default function UserForm({
           );
         }
       } catch (err) {
-        if (err.response.data.status == "400")
-          displayNotification("error", err.response.data.message);
-        else displayNotification("error", "Could not add user to database");
+        if(err.response.status=="409"){
+          setError(err.response.data.property,{type:"custom",message:err.response.data.message})
+        }else{
+          displayNotification("error", "Could not edit user data");
+        }
       }
     }
 
@@ -150,6 +154,7 @@ export default function UserForm({
         } else {
           data.user_state = false;
         }
+        clearErrors()
         const response = await editUser(data.userId, data);
         if (response.status >= "200" || response.status < "300") {
           setEditFormData({
@@ -168,7 +173,11 @@ export default function UserForm({
           displayNotification("error", "Could not edit user data");
         }
       } catch (err) {
-        displayNotification("error", "Could not edit user data");
+        if(err.response.status=="409"){
+          setError(err.response.data.property,{type:"custom",message:err.response.data.message})
+        }else{
+          displayNotification("error", "Could not edit user data");
+        }
       }
     }
 

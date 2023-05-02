@@ -5,23 +5,20 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Divider from '@mui/material/Divider';
 import {useConfirm} from "material-ui-confirm";
 import {deleteCompany} from "../../api/deleteCompany";
 import {displayNotification} from "../../services/notificationService";
 import {getCompany} from "../../api/getCompany";
 import {filterCompany} from "../../api/filterCompany";
-import Divider from '@mui/material/Divider';
 
 export default function BasicTable({
   handleOpen,
   setEditFormData,
   setAction,
-  isFilter,
   pageNumber,
-  filterData,
   setData,
   data,
 }) {

@@ -1,15 +1,14 @@
 import React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import {TextField, FormHelperText} from "@mui/material";
-import {useFormContext } from "react-hook-form";
+import {useFormContext} from "react-hook-form";
 
 const inputBoxStyles = {
-    backgroundColor: "#F0EFFF",
-  };
+  backgroundColor: "#F0EFFF",
+};
 
-  
-  const CustomTextField = ({label,name,errors,...props}) => {
-    const { register } = useFormContext();
+const CustomTextField = ({label, name, errors, ...props}) => {
+  const {register} = useFormContext();
   return (
     <div>
       <InputLabel>{label}</InputLabel>

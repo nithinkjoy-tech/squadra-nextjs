@@ -5,9 +5,9 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import Paper from "@mui/material/Paper";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Divider from '@mui/material/Divider';
 import {useConfirm} from "material-ui-confirm";
 import {deleteUser} from "../../api/deleteUser";
 import {displayNotification} from "../../services/notificationService";
@@ -56,22 +56,24 @@ export default function BasicTable({
     return <div style={{marginLeft: "10rem"}}>No Data to display</div>;
 
   return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
+    <div style={{marginTop:"1rem"}}>
+      <Divider/>
+      <TableContainer>
+        <Table style={{borderCollapse: "separate",
+            borderSpacing: "0px 1rem"}} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Full Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Phone Number</TableCell>
-              <TableCell>Company Name</TableCell>
-              <TableCell>User State</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Full Name</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Email</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Phone Number</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Company Name</TableCell>
+              <TableCell style={{borderBottom: "none"}}>User State</TableCell>
+              <TableCell style={{borderBottom: "none"}}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data?.user?.map((row, index) => (
-              <TableRow key={index}>
+              <TableRow sx={{backgroundColor:"#F0EFFF"}} key={index}>
                 <TableCell sx={{margin: "14px"}} component="th" scope="row">
                   {row.first_name + " " + row.last_name}
                 </TableCell>

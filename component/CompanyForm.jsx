@@ -41,8 +41,8 @@ const schema = Yup.object().shape({
   companyId: Yup.string()
     .required()
     .matches(
-      /^[A-Za-z]{3}[0-9]{3}$/,
-      "First 3 characters should be alphabet and next 3 should be number"
+      /^[A-Z]{3}[0-9]{3}$/,
+      "First 3 characters should be uppercase alphabet and next 3 should be number"
     )
     .label("Company ID"),
 });
@@ -80,6 +80,7 @@ export default function CompanyForm({
     getValues,
     clearErrors,
     reset,
+    setError,
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
@@ -118,6 +119,7 @@ export default function CompanyForm({
         setIsFilter(false)
         setFilterQuery()
         setPageNumber(1)
+        clearErrors()
         const response = await addCompany(data);
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Added");
@@ -128,12 +130,17 @@ export default function CompanyForm({
           displayNotification("error", "Could not add company to database");
         }
       } catch (err) {
-        displayNotification("error", "Could not add company to database");
+        if(err.response.status=="409"){
+          setError(err.response.data.property,{type:"custom",message:err.response.data.message})
+        }else{
+          displayNotification("error", "Could not edit user data");
+        }
       }
     }
 
     if (action == "Edit") {
       try {
+        clearErrors()
         const response = await editCompany(data.id, data);
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Edited");
@@ -148,7 +155,11 @@ export default function CompanyForm({
           handleClose();
         }
       } catch (err) {
-        displayNotification("error", "Could not edit company data");
+        if(err.response.status=="409"){
+          setError(err.response.data.property,{type:"custom",message:err.response.data.message})
+        }else{
+          displayNotification("error", "Could not edit user data");
+        }
       }
     }
 
