@@ -322,6 +322,7 @@ export default function CompanyForm({
                   id="companyId"
                   fullWidth
                   sx={inputBoxStyles}
+                  disabled={action=="Edit"}
                   placeholder=""
                   {...register("companyId")}
                   error={errors.companyId ? true : false}

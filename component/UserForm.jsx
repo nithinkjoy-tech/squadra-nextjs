@@ -184,11 +184,9 @@ export default function UserForm({
         setFilterQuery(data);
         setPageNumber(1);
         const response = await filterUser(data);
-        console.log(response,"res");
         setData(response.data);
         handleClose();
       } catch (err) {
-        console.log(err,"rer")
         displayNotification("error", "Could not filter");
       }
     }

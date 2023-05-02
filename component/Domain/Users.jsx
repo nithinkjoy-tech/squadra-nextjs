@@ -24,15 +24,11 @@ const Users = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    console.log(isFilter,"if")
-    console.log(filterQuery,"fq")
     if (isFilter) {
       try {
         const data = await filterUser(filterQuery, pageNumber);
-        console.log(data)
         setData(data.data);
       } catch (err) {
-        console.log(err,"er")
         displayNotification("error", "Could not fetch data");
       }
     } else {
