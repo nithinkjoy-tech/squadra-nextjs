@@ -24,21 +24,21 @@ import {filterUser} from "@/api/filterUser";
 const schema = Yup.object().shape({
   first_name: Yup.string()
     .required()
-    .min(3, "minimum 3 characters long")
+    .min(2, "minimum 2 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
     .label("First Name"),
   last_name: Yup.string()
     .required()
-    .min(3, "minimum 3 characters long")
+    .min(1, "minimum 1 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
     .label("Last Name"),
   email: Yup.string()
     .required()
-    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Should be a valid email")
+    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, "Should be a valid email")
     .label("Company Email"),
   phone: Yup.string()
     .required()
-    .matches(/^[789]\d{9}$/, "Invalid Phone number")
+    .matches(/^[6789]\d{9}$/, "Invalid Phone number")
     .label("Phone Number"),
   company_name: Yup.string()
     .required()
@@ -75,6 +75,15 @@ export default function UserForm({
   setPageNumber,
   pageNumber = 1,
 }) {
+  const initialUserData={
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone: "",
+    company_name: "",
+    user_state: "",
+  }
+
   const fetchData = async () => {
     try {
       const data = await getUser(pageNumber);
@@ -96,14 +105,7 @@ export default function UserForm({
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
-    defaultValues: editFormData || {
-      first_name: "",
-      last_name: "",
-      email: "",
-      phone: "",
-      company_name: "",
-      user_state: "",
-    },
+    defaultValues: editFormData || initialUserData,
   });
 
   useEffect(() => {
@@ -159,16 +161,11 @@ export default function UserForm({
           data.user_state = false;
         }
         clearErrors();
-        const response = await editUser(data.userId, data);
+        console.log(data,"idat")
+        const response = await editUser(data.user_id, data);
+        console.log(response,"resp")
         if (response.status >= "200" || response.status < "300") {
-          setEditFormData({
-            first_name: "",
-            last_name: "",
-            email: "",
-            phone: "",
-            company_name: "",
-            user_state: "",
-          });
+          setEditFormData(initialUserData);
           displayNotification("info", "Successfully Edited");
           fetchData();
           handleClose();
@@ -177,6 +174,7 @@ export default function UserForm({
           displayNotification("error", "Could not edit user data");
         }
       } catch (err) {
+        console.log("error", err)
         if (err.response.status == "409") {
           setError(err.response.data.property, {
             type: "custom",
@@ -201,6 +199,7 @@ export default function UserForm({
         setFilterQuery(data);
         setPageNumber(1);
         const response = await filterUser(data);
+        console.log(response,"rs")
         setData(response.data);
         handleClose();
       } catch (err) {
@@ -256,14 +255,7 @@ export default function UserForm({
                       marginLeft: "0.5rem",
                     }}
                     onClick={() => {
-                      setEditFormData({
-                        first_name: "",
-                        last_name: "",
-                        email: "",
-                        phone: "",
-                        company_name: "",
-                        user_state: "",
-                      });
+                      setEditFormData(initialUserData);
                       handleClose();
                     }}
                   />

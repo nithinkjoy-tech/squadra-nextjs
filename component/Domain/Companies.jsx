@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../Header";
-import CompanyTable from "../Table/CompanyTable";
+import CompanyTable from "../Table/DataTable";
 import Pagination from "../Pagination/Pagination";
 import {useEffect} from "react";
 import {ConfirmProvider} from "material-ui-confirm";
@@ -24,14 +24,14 @@ const Companies = ({
   setPageNumber,
 }) => {
   const fetchData = async () => {
-    if(isFilter){
+    if (isFilter) {
       try {
-        const {data} = await filterCompany(filterQuery,pageNumber-1);
+        const {data} = await filterCompany(filterQuery, pageNumber - 1);
         setData(data);
       } catch (err) {
         displayNotification("error", "Could not fetch data");
       }
-    }else{
+    } else {
       try {
         const data = await getCompany(pageNumber);
         setData(data);
@@ -56,6 +56,12 @@ const Companies = ({
       />
       <ConfirmProvider>
         <CompanyTable
+          // handleOpen,
+          // setEditFormData,
+          // setAction,
+          // pageNumber,
+          // setData,
+          // data,
           isFilter={isFilter}
           setIsFilter={setIsFilter}
           setAction={setAction}
@@ -69,7 +75,13 @@ const Companies = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      {data.totalPages>1&&<Pagination count={data.totalPages} pageNumber={pageNumber} setPageNumber={setPageNumber} />}
+      {data.totalPages > 1 && (
+        <Pagination
+          count={data.totalPages}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+        />
+      )}
     </React.Fragment>
   );
 };

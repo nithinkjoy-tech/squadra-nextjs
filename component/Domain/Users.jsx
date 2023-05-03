@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../Header";
-import UserTable from "../Table/UserTable";
+import CompanyTable from "../Table/DataTable";
 import Pagination from "../Pagination/Pagination";
 import {useEffect} from "react";
 import {ConfirmProvider} from "material-ui-confirm";
@@ -27,8 +27,10 @@ const Users = ({
     if (isFilter) {
       try {
         const data = await filterUser(filterQuery, pageNumber);
+        console.log(data, "filterwith pagination");
         setData(data.data);
       } catch (err) {
+        console.log(err, "filterwith pagi error");
         displayNotification("error", "Could not fetch data");
       }
     } else {
@@ -55,7 +57,7 @@ const Users = ({
         selectedDomain={selectedDomain}
       />
       <ConfirmProvider>
-        <UserTable
+        <CompanyTable
           isFilter={isFilter}
           setIsFilter={setIsFilter}
           data={data}

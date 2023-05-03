@@ -72,6 +72,14 @@ export default function CompanyForm({
   pageNumber,
   setPageNumber,
 }) {
+  const initialCompanyData={
+    companyName: "",
+    companyEmail: "",
+    validTill: null,
+    organizationName: "",
+    companyId: "",
+  }
+
   const {
     handleSubmit,
     formState: {errors},
@@ -84,13 +92,7 @@ export default function CompanyForm({
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
-    defaultValues: {
-      companyName: "",
-      companyEmail: "",
-      validTill: null,
-      organizationName: "",
-      companyId: "",
-    },
+    defaultValues: initialCompanyData,
   });
 
   useEffect(() => {
@@ -148,13 +150,7 @@ export default function CompanyForm({
         if (response.status >= "200" || response.status <= "300") {
           displayNotification("info", "Successfully Edited");
           fetchData();
-          setEditFormData({
-            companyName: "",
-            companyEmail: "",
-            validTill: null,
-            organizationName: "",
-            companyId: "",
-          });
+          setEditFormData(initialCompanyData);
           handleClose();
         }
       } catch (err) {
@@ -164,6 +160,7 @@ export default function CompanyForm({
             message: err.response.data.message,
           });
         } else {
+          console.log(err,"re")
           displayNotification("error", "Could not edit user data");
         }
       }
@@ -237,13 +234,7 @@ export default function CompanyForm({
                       marginLeft: "0.5rem",
                     }}
                     onClick={() => {
-                      setEditFormData({
-                        companyName: "",
-                        companyEmail: "",
-                        validTill: null,
-                        organizationName: "",
-                        companyId: "",
-                      });
+                      setEditFormData(initialCompanyData);
                       handleClose();
                     }}
                   />
