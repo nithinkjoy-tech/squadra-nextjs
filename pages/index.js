@@ -2,13 +2,13 @@ import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
 import Companies from "../component/Domain/Companies";
 import Users from "../component/Domain/Users";
-import CompanyForm from "../component/CompanyForm";
-import UserForm from "../component/UserForm";
+import CompanyForm from "../component/Forms/CompanyForm";
+import UserForm from "../component/Forms/UserForm";
 import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] = useState("Companies");
+  const [selectedDomain, setSelectedDomain] = useState("Users");
   const [editFormData, setEditFormData] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
