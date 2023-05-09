@@ -4,6 +4,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import dayjs from "dayjs";
 import CustomTextField from "../CustomTextField";
+import useMutateHook from "../../hooks/useMutateHook"
+import addCompany from "../../api/addCompany"
+import editCompany from "../../api/editCompany"
 import * as Yup from "yup";
 import {
   Button,
@@ -17,9 +20,6 @@ import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {displayNotification} from "../../services/notificationService";
-import {addCompany} from "../../api/addCompany";
-import {getCompany} from "../../api/getCompany";
-import {editCompany} from "../../api/editCompany";
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
@@ -103,65 +103,21 @@ export default function CompanyForm({
     }
   }, [editFormData]);
 
-  const fetchData = async () => {
-    try {
-      const data = await getCompany(pageNumber);
-      setData(data);
-    } catch (err) {
-      displayNotification("error", "Could not fetch data");
-    }
-  };
+  const mutation=useMutateHook(action=="Add"?addCompany(setError,reset,handleClose):editCompany(setError,reset,handleClose,setEditFormData,initialCompanyData))
 
   const submit = async data => {
     data.validTill = dayjs(data.validTill).format("YYYY-MM-DD");
     if (action == "Add") {
-      try {
         setIsFilter(false);
         setFilterQuery();
         setPageNumber(1);
         clearErrors();
-        const response = await addCompany(data);
-        if (response.status >= "200" || response.status <= "300") {
-          displayNotification("info", "Successfully Added");
-          fetchData();
-          reset();
-          handleClose();
-        } else {
-          displayNotification("error", "Could not add company to database");
-        }
-      } catch (err) {
-        if (err.response.status == "409") {
-          setError(err.response.data.property, {
-            type: "custom",
-            message: err.response.data.message,
-          });
-        } else {
-          displayNotification("error", "Could not edit user data");
-        }
-      }
+        mutation.mutate(data)
     }
 
     if (action == "Edit") {
-      try {
         clearErrors();
-        const response = await editCompany(data.id, data);
-        if (response.status >= "200" || response.status <= "300") {
-          displayNotification("info", "Successfully Edited");
-          fetchData();
-          setEditFormData(initialCompanyData);
-          handleClose();
-        }
-      } catch (err) {
-        if (err.response.status == "409") {
-          setError(err.response.data.property, {
-            type: "custom",
-            message: err.response.data.message,
-          });
-        } else {
-          console.log(err,"re")
-          displayNotification("error", "Could not edit user data");
-        }
-      }
+        mutation.mutate(data)
     }
 
     if (action == "Filter") {

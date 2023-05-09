@@ -22,6 +22,18 @@ class APIClient {
       .get(this.endpoint)
       .then((res) => res.data);
   };
+
+  post = (body) => {
+    return axiosInstance
+      .post(this.endpoint,body)
+      .then((res) => res.data);
+  };
+
+  put = (id,body) => {
+    return axiosInstance
+      .put(`${this.endpoint}/${id}`,body)
+      .then((res) => res.data);
+  };
 }
 
 export default APIClient;
