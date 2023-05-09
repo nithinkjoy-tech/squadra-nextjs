@@ -2,10 +2,10 @@ import React from "react";
 import Header from "../Header";
 import CompanyTable from "../Table/DataTable";
 import Pagination from "../Pagination/Pagination";
-import {useEffect} from "react";
+import useQueryHook from "../../hooks/useQueryHook";
+import getCompany from "../../api/getCompany";
+import getFilteredCompany from "../../api/getFilteredCompany";
 import {ConfirmProvider} from "material-ui-confirm";
-import {getCompany} from "../../api/getCompany";
-import {filterCompany} from "../../api/filterCompany";
 import {displayNotification} from "../../services/notificationService";
 
 const Companies = ({
@@ -23,27 +23,19 @@ const Companies = ({
   pageNumber,
   setPageNumber,
 }) => {
-  const fetchData = async () => {
-    if (isFilter) {
-      try {
-        const {data} = await filterCompany(filterQuery, pageNumber - 1);
-        setData(data);
-      } catch (err) {
-        displayNotification("error", "Could not fetch data");
-      }
-    } else {
-      try {
-        const data = await getCompany(pageNumber);
-        setData(data);
-      } catch (err) {
-        displayNotification("error", "Could not fetch data");
-      }
-    }
-  };
+  let {
+    data: companyData,
+    isLoading,
+    error,
+  } = useQueryHook(
+    isFilter
+      ? getFilteredCompany(filterQuery, pageNumber)
+      : getCompany(pageNumber)
+  );
 
-  useEffect(() => {
-    fetchData();
-  }, [pageNumber]);
+  if (isLoading) return "Loading";
+  if (error) return displayNotification("error", "Could not fetch data");
+  setData(companyData);
 
   return (
     <React.Fragment>
@@ -56,12 +48,6 @@ const Companies = ({
       />
       <ConfirmProvider>
         <CompanyTable
-          // handleOpen,
-          // setEditFormData,
-          // setAction,
-          // pageNumber,
-          // setData,
-          // data,
           isFilter={isFilter}
           setIsFilter={setIsFilter}
           setAction={setAction}
@@ -75,7 +61,7 @@ const Companies = ({
           selectedDomain={selectedDomain}
         />
       </ConfirmProvider>
-      {data.totalPages > 1 && (
+      {data?.totalPages > 1 && (
         <Pagination
           count={data.totalPages}
           pageNumber={pageNumber}

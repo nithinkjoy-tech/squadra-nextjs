@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import CustomTextField from "../CustomTextField";
 import * as Yup from "yup";
 import {
-  TextField,
   Button,
   Box,
   Typography,
@@ -21,7 +20,6 @@ import {displayNotification} from "../../services/notificationService";
 import {addCompany} from "../../api/addCompany";
 import {getCompany} from "../../api/getCompany";
 import {editCompany} from "../../api/editCompany";
-import {filterCompany} from "../../api/filterCompany";
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
@@ -167,16 +165,10 @@ export default function CompanyForm({
     }
 
     if (action == "Filter") {
-      try {
         setIsFilter(true);
         setFilterQuery(data);
         setPageNumber(1);
-        const response = await filterCompany(data);
-        setData(response.data);
         handleClose();
-      } catch (err) {
-        displayNotification("error", "Could not apply filter");
-      }
     }
   };
 
