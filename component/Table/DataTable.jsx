@@ -8,12 +8,10 @@ import TableHead from "@mui/material/TableHead";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
+import useMutateHook from "../../hooks/useMutateHook"
+import deleteCompany from "../../api/deleteCompany";
+import deleteUser from "../../api/deleteUser";
 import {useConfirm} from "material-ui-confirm";
-import {deleteCompany} from "../../api/deleteCompany";
-import {displayNotification} from "../../services/notificationService";
-import {getCompany} from "../../api/getCompany";
-import {deleteUser} from "../../api/deleteUser";
-import {getUser} from "../../api/getUser";
 
 let companies = {
   companyName: "Company Name",
@@ -21,12 +19,9 @@ let companies = {
   validTill: "Valid Till",
   organizationName: "Organization Name",
   companyId: "Company ID",
-  // actions: "Actions",
 };
 
 let users = {
-  // first_name:"First Name",
-  // last_name:"Last Name",
   email: "Email",
   phone: "Phone Number",
   company_name: "Company Name",
@@ -43,54 +38,12 @@ export default function BasicTable({
   setData,
   data,
 }) {
-  const fetchData = async () => {
-    if (selectedDomain == "Companies") {
-      try {
-        const data = await getCompany(pageNumber);
-        setData(data);
-      } catch (err) {
-        displayNotification("error", "Could not fetch data");
-      }
-    }
-
-    if (selectedDomain == "Users") {
-      try {
-        const data = await getUser(pageNumber);
-        console.log(data, "jjj");
-        setData(data);
-      } catch (err) {
-        console.log(err, "mm");
-        displayNotification("error", "Could not fetch data");
-      }
-    }
-  };
+  const mutation=useMutateHook(selectedDomain == "Companies"?deleteCompany():deleteUser())
 
   const confirm = useConfirm();
 
   const handleDelete = async id => {
-    if (selectedDomain == "Companies") {
-      try {
-        const response = await deleteCompany(id);
-        if (response.status == "200") {
-          fetchData();
-          return displayNotification("info", "Successfully Deleted");
-        }
-      } catch (err) {
-        displayNotification("error", "Could not delete data");
-      }
-    }
-
-    if (selectedDomain == "Users") {
-      try {
-        const response = await deleteUser(id);
-        if (response.status >= "200" || response.status < "300") {
-          fetchData();
-          return displayNotification("info", "Successfully Deleted");
-        }
-      } catch (err) {
-        displayNotification("error", "Could not delete");
-      }
-    }
+    mutation.mutate(id)
   };
 
   const getDomain = () => {
@@ -108,8 +61,6 @@ export default function BasicTable({
 
   if (data?.content?.length == 0)
     return <div style={{marginLeft: "10rem"}}>No Data to display</div>;
-
-  console.log(data, "wer");
 
   return (
     <div style={{marginTop: "1rem"}}>

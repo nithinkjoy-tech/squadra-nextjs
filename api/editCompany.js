@@ -4,12 +4,18 @@ import {displayNotification} from "../services/notificationService";
 
 const apiClient = new APIClient("/company");
 
-const editCompany = (setError, reset, handleClose,setEditFormData,initialCompanyData) => {
+const editCompany = (
+  setError,
+  reset,
+  handleClose,
+  setEditFormData,
+  initialCompanyData
+) => {
   const queryClient = useQueryClient();
 
   return {
-    mutationFn: (data) => {
-      return apiClient.put(data.id,data);
+    mutationFn: data => {
+      return apiClient.put(data.id, data);
     },
     onError: (error, variables, context) => {
       if (error.response.status == "409") {
@@ -22,7 +28,7 @@ const editCompany = (setError, reset, handleClose,setEditFormData,initialCompany
       }
     },
     onSuccess: (data, variables, context) => {
-        setEditFormData(initialCompanyData);
+      setEditFormData(initialCompanyData);
       reset();
       handleClose();
       displayNotification("success", "Successfully Added");

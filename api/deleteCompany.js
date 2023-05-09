@@ -1,5 +1,24 @@
-import {axiosInstance} from "../services/api-client"
+import APIClient from "../services/api-client";
+import {useQueryClient} from "@tanstack/react-query";
+import {displayNotification} from "../services/notificationService";
 
-export function deleteCompany(id){
-    return axiosInstance.delete(`/company/${id}`)
-}
+const apiClient = new APIClient("/company");
+
+const deleteCompany = () => {
+  const queryClient = useQueryClient();
+
+  return {
+    mutationFn: id => {
+      return apiClient.delete(id);
+    },
+    onError: (error, variables, context) => {
+        displayNotification("error", "Could not delete company");
+    },
+    onSuccess: (data, variables, context) => {
+      displayNotification("success", "Successfully Deleted");
+      queryClient.invalidateQueries({queryKey: ["company"]});
+    },
+  };
+};
+
+export default deleteCompany;

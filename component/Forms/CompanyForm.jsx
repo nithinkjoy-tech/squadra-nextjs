@@ -4,22 +4,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import dayjs from "dayjs";
 import CustomTextField from "../CustomTextField";
-import useMutateHook from "../../hooks/useMutateHook"
-import addCompany from "../../api/addCompany"
-import editCompany from "../../api/editCompany"
+import useMutateHook from "../../hooks/useMutateHook";
+import addCompany from "../../api/addCompany";
+import editCompany from "../../api/editCompany";
 import * as Yup from "yup";
-import {
-  Button,
-  Box,
-  Typography,
-  FormHelperText,
-} from "@mui/material";
+import {Button, Box, Typography, FormHelperText} from "@mui/material";
 import {useForm, FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {displayNotification} from "../../services/notificationService";
 
 const schema = Yup.object().shape({
   companyName: Yup.string()
@@ -66,17 +60,15 @@ export default function CompanyForm({
   setFilterQuery,
   setIsFilter,
   action,
-  setData,
-  pageNumber,
   setPageNumber,
 }) {
-  const initialCompanyData={
+  const initialCompanyData = {
     companyName: "",
     companyEmail: "",
     validTill: null,
     organizationName: "",
     companyId: "",
-  }
+  };
 
   const {
     handleSubmit,
@@ -103,28 +95,38 @@ export default function CompanyForm({
     }
   }, [editFormData]);
 
-  const mutation=useMutateHook(action=="Add"?addCompany(setError,reset,handleClose):editCompany(setError,reset,handleClose,setEditFormData,initialCompanyData))
+  const mutation = useMutateHook(
+    action == "Add"
+      ? addCompany(setError, reset, handleClose)
+      : editCompany(
+          setError,
+          reset,
+          handleClose,
+          setEditFormData,
+          initialCompanyData
+        )
+  );
 
   const submit = async data => {
     data.validTill = dayjs(data.validTill).format("YYYY-MM-DD");
     if (action == "Add") {
-        setIsFilter(false);
-        setFilterQuery();
-        setPageNumber(1);
-        clearErrors();
-        mutation.mutate(data)
+      setIsFilter(false);
+      setFilterQuery();
+      setPageNumber(1);
+      clearErrors();
+      mutation.mutate(data);
     }
 
     if (action == "Edit") {
-        clearErrors();
-        mutation.mutate(data)
+      clearErrors();
+      mutation.mutate(data);
     }
 
     if (action == "Filter") {
-        setIsFilter(true);
-        setFilterQuery(data);
-        setPageNumber(1);
-        handleClose();
+      setIsFilter(true);
+      setFilterQuery(data);
+      setPageNumber(1);
+      handleClose();
     }
   };
 
