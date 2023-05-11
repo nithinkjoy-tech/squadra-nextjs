@@ -1,7 +1,6 @@
 import Navbar from "../component/Navbar/Navbar";
 import Sidebar from "../component/Sidebar/Sidebar";
-import Companies from "../component/Domain/Companies";
-import Users from "../component/Domain/Users";
+import MainContent from "../component/MainContent";
 import CompanyForm from "../component/Forms/CompanyForm";
 import UserForm from "../component/Forms/UserForm";
 import {Grid} from "@material-ui/core";
@@ -20,6 +19,38 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const formProps = {
+    filterQuery,
+    setFilterQuery,
+    isFilter,
+    setIsFilter,
+    setPageNumber,
+    pageNumber,
+    setData,
+    selectedDomain,
+    action,
+    editFormData,
+    setEditFormData,
+    open,
+    handleClose,
+  };
+
+  let mainContentProps= {
+    isFilter,
+    setIsFilter,
+    setAction,
+    filterQuery,
+    data,
+    setData,
+    open,
+    handleOpen,
+    handleClose,
+    pageNumber,
+    setPageNumber,
+    selectedDomain,
+    setEditFormData
+  };
+  
   return (
     <>
       <Grid container spacing={2}>
@@ -34,74 +65,13 @@ export default function Home() {
           />
         </Grid>
         <Grid item md={9}>
-          {selectedDomain == "Companies" && (
-            <>
-              <CompanyForm
-                filterQuery={filterQuery}
-                setFilterQuery={setFilterQuery}
-                isFilter={isFilter}
-                setIsFilter={setIsFilter}
-                setPageNumber={setPageNumber}
-                pageNumber={pageNumber}
-                setData={setData}
-                selectedDomain={selectedDomain}
-                action={action}
-                editFormData={editFormData}
-                setEditFormData={setEditFormData}
-                open={open}
-                handleClose={handleClose}
-              />
-              <Companies
-                isFilter={isFilter}
-                setIsFilter={setIsFilter}
-                data={data}
-                filterQuery={filterQuery}
-                setPageNumber={setPageNumber}
-                pageNumber={pageNumber}
-                setData={setData}
-                setAction={setAction}
-                open={open}
-                handleOpen={handleOpen}
-                handleClose={handleClose}
-                selectedDomain={selectedDomain}
-                setEditFormData={setEditFormData}
-              />
-            </>
-          )}
-          {selectedDomain == "Users" && (
-            <>
-              <UserForm
-                filterQuery={filterQuery}
-                setFilterQuery={setFilterQuery}
-                isFilter={isFilter}
-                setIsFilter={setIsFilter}
-                setData={setData}
-                selectedDomain={selectedDomain}
-                action={action}
-                setPageNumber={setPageNumber}
-                pageNumber={pageNumber}
-                setEditFormData={setEditFormData}
-                editFormData={editFormData}
-                open={open}
-                handleClose={handleClose}
-              />
-              <Users
-                isFilter={isFilter}
-                setIsFilter={setIsFilter}
-                setAction={setAction}
-                filterQuery={filterQuery}
-                data={data}
-                setData={setData}
-                open={open}
-                handleOpen={handleOpen}
-                handleClose={handleClose}
-                pageNumber={pageNumber}
-                setPageNumber={setPageNumber}
-                selectedDomain={selectedDomain}
-                setEditFormData={setEditFormData}
-              />
-            </>
-          )}
+          <>
+            {selectedDomain == "Companies" && <CompanyForm {...formProps} />}
+            {selectedDomain == "Users" && <UserForm {...formProps} />}
+            <MainContent
+              {...mainContentProps}
+            />
+          </>
         </Grid>
       </Grid>
     </>
