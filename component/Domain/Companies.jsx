@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../Header";
-import CompanyTable from "../Table/DataTable";
+import DataTable from "../Table/DataTable";
 import Pagination from "../Pagination/Pagination";
 import useQueryHook from "../../hooks/useQueryHook";
 import getCompany from "../../api/getCompany";
@@ -47,7 +47,7 @@ const Companies = ({
         selectedDomain={selectedDomain}
       />
       <ConfirmProvider>
-        <CompanyTable
+        <DataTable
           isFilter={isFilter}
           setIsFilter={setIsFilter}
           setAction={setAction}

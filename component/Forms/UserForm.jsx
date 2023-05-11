@@ -4,8 +4,10 @@ import * as Yup from "yup";
 import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import CustomTextField from "../CustomTextField";
+import useMutateHook from "../../hooks/useMutateHook";
+import addUser from "../../api/addUser";
+import editUser from "../../api/editUser";
 import {
-  TextField,
   Button,
   Box,
   Typography,
@@ -16,10 +18,6 @@ import {
 import {useForm, FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {displayNotification} from "../../services/notificationService";
-import {addUser} from "../../api/addUser";
-import {getUser} from "../../api/getUser";
-import {editUser} from "../../api/editUser";
-import {filterUser} from "@/api/filterUser";
 
 const schema = Yup.object().shape({
   first_name: Yup.string()
@@ -75,22 +73,13 @@ export default function UserForm({
   setPageNumber,
   pageNumber = 1,
 }) {
-  const initialUserData={
+  const initialUserData = {
     first_name: "",
     last_name: "",
     email: "",
     phone: "",
     company_name: "",
     user_state: "",
-  }
-
-  const fetchData = async () => {
-    try {
-      const data = await getUser(pageNumber);
-      setData(data);
-    } catch (err) {
-      displayNotification("error", "Could not get user data");
-    }
   };
 
   const {
@@ -115,6 +104,12 @@ export default function UserForm({
     reset(editFormData);
   }, [editFormData, action]);
 
+  const mutation = useMutateHook(
+    action == "Add"
+      ? addUser(setError, reset, handleClose)
+      : editUser(setError, reset, handleClose, setEditFormData, initialUserData)
+  );
+
   const submit = async data => {
     if (action == "Add") {
       setIsFilter(false);
@@ -126,85 +121,31 @@ export default function UserForm({
       } else {
         data.user_state = false;
       }
-      try {
-        const response = await addUser(data);
-        if (response.status >= "200" && response.status <= "300") {
-          reset();
-          displayNotification("info", "Successfully Added");
-          fetchData();
-          handleClose();
-        } else {
-          displayNotification(
-            "error",
-            response?.response?.data?.error?.message ||
-              "Could not add user to database"
-          );
-        }
-      } catch (err) {
-        console.log(err);
-        if (err.response.status == "409") {
-          setError(err.response.data.property, {
-            type: "custom",
-            message: err.response.data.message,
-          });
-        } else {
-          displayNotification("error", "Could not edit user data");
-        }
-      }
+      mutation.mutate(data);
     }
 
     if (action == "Edit") {
-      try {
-        if (data.user_state == "Active") {
-          data.user_state = true;
-        } else {
-          data.user_state = false;
-        }
-        clearErrors();
-        console.log(data,"idat")
-        const response = await editUser(data.user_id, data);
-        console.log(response,"resp")
-        if (response.status >= "200" || response.status < "300") {
-          setEditFormData(initialUserData);
-          displayNotification("info", "Successfully Edited");
-          fetchData();
-          handleClose();
-        } else {
-          reset();
-          displayNotification("error", "Could not edit user data");
-        }
-      } catch (err) {
-        console.log("error", err)
-        if (err.response.status == "409") {
-          setError(err.response.data.property, {
-            type: "custom",
-            message: err.response.data.message,
-          });
-        } else {
-          displayNotification("error", "Could not edit user data");
-        }
+      if (data.user_state == "Active") {
+        data.user_state = true;
+      } else {
+        data.user_state = false;
       }
+      clearErrors();
+      mutation.mutate(data);
     }
 
     if (action == "Filter") {
-      try {
-        if (data.user_state == "Active") {
-          data.user_state = true;
-        } else if (data.user_state == "Inactive") {
-          data.user_state = false;
-        } else {
-          data.user_state = "";
-        }
-        setIsFilter(true);
-        setFilterQuery(data);
-        setPageNumber(1);
-        const response = await filterUser(data);
-        console.log(response,"rs")
-        setData(response.data);
-        handleClose();
-      } catch (err) {
-        displayNotification("error", "Could not filter");
+      if (data.user_state == "Active") {
+        data.user_state = true;
+      } else if (data.user_state == "Inactive") {
+        data.user_state = false;
+      } else {
+        data.user_state = "";
       }
+      setIsFilter(true);
+      setFilterQuery(data);
+      setPageNumber(1);
+      handleClose();
     }
   };
 

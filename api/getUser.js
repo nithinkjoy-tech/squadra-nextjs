@@ -1,9 +1,16 @@
-import {axiosInstance} from "../services/api-client";
+import APIClient from "./../services/api-client";
 
-export const getUser = async pageNumber => {
-  if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 1;
-  const {data} = await axiosInstance.get(
-    `/users?pagesize=4&pageno=${pageNumber - 1}`
-  );
-  return data;
+const apiClient = new APIClient("/users");
+
+const getUser = (pageNumber) => {
+  if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 0;
+  return {
+    queryKey: ["users", pageNumber],
+    queryFn: () => {
+      return apiClient.getAll(`?pagesize=4&pageno=${pageNumber-1}`);
+    },
+    keepPreviousData: true,
+  };
 };
+
+export default getUser;
