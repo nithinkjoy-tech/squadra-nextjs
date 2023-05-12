@@ -3,7 +3,6 @@ import APIClient from "./../services/api-client";
 const apiClient = new APIClient("/companies");
 
 const getFilteredCompany = (filterQuery, pageNumber) => {
-  console.log(pageNumber,"ffpnooo")
   if(!pageNumber||Object.is(NaN,pageNumber)) pageNumber=1
   let date = filterQuery?.validTill == "Invalid Date" ? "" : filterQuery?.validTill;
   return {
