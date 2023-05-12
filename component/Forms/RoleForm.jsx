@@ -5,10 +5,11 @@ import InputLabel from "@mui/material/InputLabel";
 import dayjs from "dayjs";
 import CustomTextField from "../CustomTextField";
 import useMutateHook from "../../hooks/useMutateHook";
-import addCompany from "../../api/addCompany";
-import editCompany from "../../api/editCompany";
+import addRole from "../../api/addRole";
+import editRole from "../../api/editRole";
 import * as Yup from "yup";
-import {Button, Box, Typography, FormHelperText} from "@mui/material";
+import {Button, Box, Typography, FormHelperText,Select,
+    MenuItem,} from "@mui/material";
 import {useForm, FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -16,28 +17,27 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 
 const schema = Yup.object().shape({
-  companyName: Yup.string()
-    .required()
-    .min(3, "minimum 3 characters long")
-    .matches(/\w+[\s\w]*\w+/g, "Invalid Company Name")
-    .label("Name"),
-  companyEmail: Yup.string()
-    .required()
-    .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Should be a valid email")
-    .label("Company Email"),
-  validTill: Yup.string().required().label("Date"),
-  organizationName: Yup.string()
-    .required()
-    .min(3, "Minimum 3 Characters required")
-    .label("Organization Name"),
-  companyId: Yup.string()
-    .required()
-    .matches(
-      /^[A-Z]{3}[0-9]{3}$/,
-      "First 3 characters should be uppercase alphabet and next 3 should be number"
-    )
-    .label("Company ID"),
-});
+    roleName: Yup.string()
+      .oneOf(["Admin", "Manager"])
+      .required()
+      .label("Role Name"),
+    organizationName: Yup.string()
+      .required()
+      .min(3, "Minimum 3 Characters required")
+      .label("Organization Name"),
+    createdDate: Yup.string().required().label("Created Date"),
+    roleState: Yup.string()
+      .oneOf(["Active", "Inactive"])
+      .required()
+      .label("Role State"),
+    roleId: Yup.string()
+      .required()
+      .matches(
+        /^[A-Z]{3}[0-9]{3}$/,
+        "First 3 characters should be uppercase alphabet and next 3 should be number"
+      )
+      .label("Role ID"),
+  });
 
 const style = {
   position: "absolute",
@@ -51,7 +51,7 @@ const style = {
   p: 4,
 };
 
-export default function CompanyForm({
+export default function RoleForm({
   open,
   handleClose,
   editFormData,
@@ -62,12 +62,12 @@ export default function CompanyForm({
   action,
   setPageNumber,
 }) {
-  const initialCompanyData = {
-    companyName: "",
-    companyEmail: "",
-    validTill: null,
+  const initialRoleData = {
+    roleName: "",
     organizationName: "",
-    companyId: "",
+    createdDate: null,
+    roleState: "",
+    roleId: "",
   };
 
   const {
@@ -82,7 +82,7 @@ export default function CompanyForm({
   } = useForm({
     resolver: action == "Filter" ? "" : yupResolver(schema),
     mode: "onTouched",
-    defaultValues: initialCompanyData,
+    defaultValues: initialRoleData,
   });
 
   useEffect(() => {
@@ -90,25 +90,25 @@ export default function CompanyForm({
       reset();
     }
     if (editFormData) {
-      setValue("validTill", dayjs(new Date(editFormData.validTill)), true);
+      setValue("createdDate", dayjs(new Date(editFormData.createdDate)), true);
       reset(editFormData);
     }
   }, [editFormData]);
 
   const mutation = useMutateHook(
     action == "Add"
-      ? addCompany(setError, reset, handleClose)
-      : editCompany(
+      ? addRole(setError, reset, handleClose)
+      : editRole(
           setError,
           reset,
           handleClose,
           setEditFormData,
-          initialCompanyData
+          initialRoleData
         )
   );
 
   const submit = async data => {
-    data.validTill = dayjs(data.validTill).format("YYYY-MM-DD");
+    data.createdDate = dayjs(data.createdDate).format("YYYY-MM-DD");
     if (action == "Add") {
       setIsFilter(false);
       setFilterQuery();
@@ -131,15 +131,16 @@ export default function CompanyForm({
   };
 
   const getDate = () => {
-    return action == "Edit" && getValues("validTill")
-      ? dayjs(new Date(getValues("validTill")))
-      : action == "Filter" && getValues("validTill")
-      ? dayjs(new Date(getValues("validTill")))
+    return action == "Edit" && getValues("createdDate")
+      ? dayjs(new Date(getValues("createdDate")))
+      : action == "Filter" && getValues("createdDate")
+      ? dayjs(new Date(getValues("createdDate")))
       : "";
   };
 
   const inputBoxStyles = {
     backgroundColor: "#F0EFFF",
+    width:"100%"
   };
 
   return (
@@ -169,7 +170,7 @@ export default function CompanyForm({
                     color: "blue",
                   }}
                 >
-                  {`${action} Company`}
+                  {`${action} Role`}
                 </Typography>
                 <div>
                   {action === "Filter" && (
@@ -183,7 +184,7 @@ export default function CompanyForm({
                       marginLeft: "0.5rem",
                     }}
                     onClick={() => {
-                      setEditFormData(initialCompanyData);
+                      setEditFormData(initialRoleData);
                       handleClose();
                     }}
                   />
@@ -197,23 +198,47 @@ export default function CompanyForm({
                   gap: "10px",
                 }}
               >
+                <div>
+                  <InputLabel>Role Name</InputLabel>
+                  <Select
+                    labelId="role-select-label"
+                    id="role-select"
+                    value={getValues("roleName")}
+                    onChange={event => {
+                      setValue("roleName", event.target.value, true);
+                      clearErrors("roleName");
+                    }}
+                    sx={inputBoxStyles}
+                  >
+                    <MenuItem value=""></MenuItem>
+                    <MenuItem key="admin" value={"Admin"}>
+                      Admin
+                    </MenuItem>
+                    <MenuItem key="manager" value={"Manager"}>
+                      Manager
+                    </MenuItem>
+                  </Select>
+                  {errors.roleName && (
+                    <FormHelperText
+                      error={true}
+                      id="outlined-weight-helper-text"
+                    >
+                      {errors?.roleName?.message}
+                    </FormHelperText>
+                  )}
+                </div>
                 <CustomTextField
-                  label="Company Name"
-                  name="companyName"
-                  errors={errors}
-                />
-                <CustomTextField
-                  label="Company's Email ID"
-                  name="companyEmail"
+                  label="Organisation Name"
+                  name="organizationName"
                   errors={errors}
                 />
                 <div>
-                  <InputLabel>Valid Till</InputLabel>
+                  <InputLabel>Created Date</InputLabel>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                       onChange={date => {
-                        setValue("validTill", new Date(date), true);
-                        clearErrors("validTill");
+                        setValue("createdDate", new Date(date), true);
+                        clearErrors("createdDate");
                       }}
                       sx={inputBoxStyles}
                       value={getDate()}
@@ -227,25 +252,48 @@ export default function CompanyForm({
                       format="DD/MM/YYYY"
                     />
                   </LocalizationProvider>
-                  {errors.validTill && (
+                  {errors.createdDate && (
                     <FormHelperText
                       error={true}
                       id="outlined-weight-helper-text"
                     >
-                      {errors?.validTill?.message}
+                      {errors?.createdDate?.message}
+                    </FormHelperText>
+                  )}
+                </div>
+                <div>
+                  <InputLabel>Role State</InputLabel>
+                  <Select
+                    labelId="role-select-label"
+                    id="role-select"
+                    value={getValues("roleState")}
+                    onChange={event => {
+                      setValue("roleState", event.target.value, true);
+                      clearErrors("roleState");
+                    }}
+                    sx={inputBoxStyles}
+                  >
+                    <MenuItem value=""></MenuItem>
+                    <MenuItem key="inactive" value={"Inactive"}>
+                      Inactive
+                    </MenuItem>
+                    <MenuItem key="active" value={"Active"}>
+                      Active
+                    </MenuItem>
+                  </Select>
+                  {errors.roleState && (
+                    <FormHelperText
+                      error={true}
+                      id="outlined-weight-helper-text"
+                    >
+                      {errors?.roleState?.message}
                     </FormHelperText>
                   )}
                 </div>
                 <CustomTextField
-                  label="Organisation Name"
-                  name="organizationName"
+                  label="Role ID"
+                  name="roleId"
                   errors={errors}
-                />
-                <CustomTextField
-                  label="Company ID"
-                  name="companyId"
-                  errors={errors}
-                  disabled={action == "Edit"}
                 />
               </div>
               <Button

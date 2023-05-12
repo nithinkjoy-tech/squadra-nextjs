@@ -7,6 +7,8 @@ import getUser from "../api/getUser";
 import getFilteredUser from "../api/getFilteredUser";
 import getCompany from "../api/getCompany";
 import getFilteredCompany from "../api/getFilteredCompany";
+import getRole from "../api/getRole";
+import getFilteredRole from "../api/getFilteredRole";
 import {ConfirmProvider} from "material-ui-confirm";
 import {displayNotification} from "../services/notificationService";
 
@@ -28,12 +30,15 @@ const MainContent = ({
   const getFilterAPICall = (filterQuery, pageNumber) => {
     if (selectedDomain == "Companies")
       return getFilteredCompany(filterQuery, pageNumber);
+    if (selectedDomain == "Roles")
+      return getFilteredRole(filterQuery, pageNumber);
     if (selectedDomain == "Users")
       return getFilteredUser(filterQuery, pageNumber);
   };
 
   const getAPICall = pageNumber => {
     if (selectedDomain == "Companies") return getCompany(pageNumber);
+    if (selectedDomain == "Roles") return getRole(pageNumber);
     if (selectedDomain == "Users") return getUser(pageNumber);
   };
 

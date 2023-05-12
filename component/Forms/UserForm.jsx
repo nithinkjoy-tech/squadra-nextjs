@@ -164,8 +164,7 @@ export default function UserForm({
                     color: "blue",
                   }}
                 >
-                  {selectedDomain == "Companies" && `${action} Company`}
-                  {selectedDomain == "Users" && `${action} Users`}
+                  {`${action} User`}
                 </Typography>
                 <div>
                   {action === "Filter" && (

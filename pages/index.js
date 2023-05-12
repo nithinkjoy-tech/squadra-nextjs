@@ -3,6 +3,7 @@ import Sidebar from "../component/Sidebar/Sidebar";
 import MainContent from "../component/MainContent";
 import CompanyForm from "../component/Forms/CompanyForm";
 import UserForm from "../component/Forms/UserForm";
+import RoleForm from "../component/Forms/RoleForm";
 import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
@@ -35,7 +36,7 @@ export default function Home() {
     handleClose,
   };
 
-  let mainContentProps= {
+  let mainContentProps = {
     isFilter,
     setIsFilter,
     setAction,
@@ -48,9 +49,9 @@ export default function Home() {
     pageNumber,
     setPageNumber,
     selectedDomain,
-    setEditFormData
+    setEditFormData,
   };
-  
+
   return (
     <>
       <Grid container spacing={2}>
@@ -59,7 +60,7 @@ export default function Home() {
         </Grid>
         <Grid item md={2}>
           <Sidebar
-          setFilterQuery={setFilterQuery}
+            setFilterQuery={setFilterQuery}
             setIsFilter={setIsFilter}
             selectedDomain={selectedDomain}
             setSelectedDomain={setSelectedDomain}
@@ -68,11 +69,10 @@ export default function Home() {
         </Grid>
         <Grid item md={9}>
           <>
-            {selectedDomain == "Companies" && <CompanyForm {...formProps} />}
             {selectedDomain == "Users" && <UserForm {...formProps} />}
-            <MainContent
-              {...mainContentProps}
-            />
+            {selectedDomain == "Roles" && <RoleForm {...formProps} />}
+            {selectedDomain == "Companies" && <CompanyForm {...formProps} />}
+            <MainContent {...mainContentProps} />
           </>
         </Grid>
       </Grid>

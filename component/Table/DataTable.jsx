@@ -21,6 +21,14 @@ let companies = {
   companyId: "Company ID",
 };
 
+let roles = {
+  roleName: "Role Name",
+  organizationName: "Organization Name",
+  createdDate: "Created Date",
+  roleState: "Role State",
+  roleId: "Role ID",
+};
+
 let users = {
   email: "Email",
   phoneNumber: "Phone Number",
@@ -51,6 +59,8 @@ export default function BasicTable({
   const getDomain = () => {
     if (selectedDomain == "Companies") return "company";
     if (selectedDomain == "Users") return "user";
+    if (selectedDomain == "Roles") return "role";
+    if (selectedDomain == "Wholesalers") return "wholesaler";
   };
 
   const handleConfirm = id => {
