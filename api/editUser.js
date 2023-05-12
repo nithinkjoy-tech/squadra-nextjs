@@ -15,7 +15,7 @@ const editUser = (
 
   return {
     mutationFn: data => {
-      return apiClient.put(data.user_id, data);
+      return apiClient.put(data._id, data);
     },
     onError: (error, variables, context) => {
       if (error.response.status == "409") {

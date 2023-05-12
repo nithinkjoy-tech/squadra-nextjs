@@ -20,12 +20,12 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {displayNotification} from "../../services/notificationService";
 
 const schema = Yup.object().shape({
-  first_name: Yup.string()
+  firstName: Yup.string()
     .required()
     .min(2, "minimum 2 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
     .label("First Name"),
-  last_name: Yup.string()
+  lastName: Yup.string()
     .required()
     .min(1, "minimum 1 characters long")
     .matches(/^[A-Za-z]+$/, "Only alphabets allowed")
@@ -34,15 +34,15 @@ const schema = Yup.object().shape({
     .required()
     .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,3}$/g, "Should be a valid email")
     .label("Company Email"),
-  phone: Yup.string()
+  phoneNumber: Yup.string()
     .required()
     .matches(/^[6789]\d{9}$/, "Invalid Phone number")
     .label("Phone Number"),
-  company_name: Yup.string()
+  companyName: Yup.string()
     .required()
     .min(3, "Minimum 3 Characters required")
     .label("Company Name"),
-  user_state: Yup.string()
+  userState: Yup.string()
     .oneOf(["Active", "Inactive"])
     .required()
     .label("User State"),
@@ -74,12 +74,12 @@ export default function UserForm({
   pageNumber = 1,
 }) {
   const initialUserData = {
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    phone: "",
-    company_name: "",
-    user_state: "",
+    phoneNumber: "",
+    companyName: "",
+    userState: "",
   };
 
   const {
@@ -116,32 +116,15 @@ export default function UserForm({
       setFilterQuery();
       setPageNumber(1);
       clearErrors();
-      if (data.user_state == "Active") {
-        data.user_state = true;
-      } else {
-        data.user_state = false;
-      }
       mutation.mutate(data);
     }
 
     if (action == "Edit") {
-      if (data.user_state == "Active") {
-        data.user_state = true;
-      } else {
-        data.user_state = false;
-      }
       clearErrors();
       mutation.mutate(data);
     }
 
     if (action == "Filter") {
-      if (data.user_state == "Active") {
-        data.user_state = true;
-      } else if (data.user_state == "Inactive") {
-        data.user_state = false;
-      } else {
-        data.user_state = "";
-      }
       setIsFilter(true);
       setFilterQuery(data);
       setPageNumber(1);
@@ -212,12 +195,12 @@ export default function UserForm({
               >
                 <CustomTextField
                   label="First Name"
-                  name="first_name"
+                  name="firstName"
                   errors={errors}
                 />
                 <CustomTextField
                   label="Last Name"
-                  name="last_name"
+                  name="lastName"
                   errors={errors}
                 />
                 <CustomTextField
@@ -227,7 +210,7 @@ export default function UserForm({
                 />
                 <CustomTextField
                   label="Phone Number"
-                  name="phone"
+                  name="phoneNumber"
                   errors={errors}
                 />
                 <div>
@@ -235,10 +218,10 @@ export default function UserForm({
                   <Select
                     labelId="role-select-label"
                     id="role-select"
-                    value={getValues("user_state")}
+                    value={getValues("userState")}
                     onChange={event => {
-                      setValue("user_state", event.target.value, true);
-                      clearErrors("user_state");
+                      setValue("userState", event.target.value, true);
+                      clearErrors("userState");
                     }}
                     sx={inputBoxStyles}
                   >
@@ -250,18 +233,18 @@ export default function UserForm({
                       Active
                     </MenuItem>
                   </Select>
-                  {errors.user_state && (
+                  {errors.userState && (
                     <FormHelperText
                       error={true}
                       id="outlined-weight-helper-text"
                     >
-                      {errors?.user_state?.message}
+                      {errors?.userState?.message}
                     </FormHelperText>
                   )}
                 </div>
                 <CustomTextField
                   label="Company Name"
-                  name="company_name"
+                  name="companyName"
                   errors={errors}
                 />
               </div>

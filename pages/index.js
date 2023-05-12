@@ -7,7 +7,7 @@ import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] = useState("Users");
+  const [selectedDomain, setSelectedDomain] = useState("Companies");
   const [editFormData, setEditFormData] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
@@ -59,6 +59,8 @@ export default function Home() {
         </Grid>
         <Grid item md={2}>
           <Sidebar
+          setFilterQuery={setFilterQuery}
+            setIsFilter={setIsFilter}
             selectedDomain={selectedDomain}
             setSelectedDomain={setSelectedDomain}
             setPageNumber={setPageNumber}

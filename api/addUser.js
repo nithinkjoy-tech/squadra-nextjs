@@ -2,7 +2,7 @@ import APIClient from "../services/api-client";
 import {useQueryClient} from "@tanstack/react-query";
 import {displayNotification} from "../services/notificationService";
 
-const apiClient = new APIClient("/users/");
+const apiClient = new APIClient("/users");
 
 const addUser = (setError, reset, handleClose) => {
   const queryClient = useQueryClient();

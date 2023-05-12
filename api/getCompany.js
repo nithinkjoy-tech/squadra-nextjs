@@ -1,13 +1,14 @@
 import APIClient from "./../services/api-client";
 
-const apiClient = new APIClient("/company");
+const apiClient = new APIClient("/companies");
 
 const getCompany = (pageNumber) => {
-  if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 0;
+  console.log(pageNumber,"pnooo")
+  if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 1;
   return {
-    queryKey: ["company", pageNumber],
+    queryKey: ["companies", pageNumber],
     queryFn: () => {
-      return apiClient.getAll(`?pagesize=4&pageno=${pageNumber-1}`);
+      return apiClient.getAll(`?pageSize=4&pageNo=${pageNumber}`);
     },
     keepPreviousData: true,
   };

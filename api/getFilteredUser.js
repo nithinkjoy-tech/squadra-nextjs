@@ -3,7 +3,8 @@ import APIClient from "./../services/api-client";
 const apiClient = new APIClient("/users");
 
 const getFilteredUser = (filterQuery, pageNumber) => {
-    let url=`/filter?pagesize=4&pageno=${pageNumber-1}&first_name=${filterQuery?.first_name}&last_name=${filterQuery?.last_name}&email=${filterQuery?.email}&phone=${filterQuery?.phone}&company_name=${filterQuery?.company_name}&user_state=${filterQuery?.user_state}`
+    let url=`?pageSize=4&pageNo=${pageNumber}&firstName=${filterQuery?.firstName}&lastName=${filterQuery?.lastName}&email=${filterQuery?.email}&phoneNumber=${filterQuery?.phoneNumber}&companyName=${filterQuery?.companyName}&userState=${filterQuery?.userState}`
+    console.log(url)
   if(!pageNumber||Object.is(NaN,pageNumber)) pageNumber=1
   return {
     queryKey: ["users", filterQuery, pageNumber],

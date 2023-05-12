@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
-import useMutateHook from "../../hooks/useMutateHook"
+import useMutateHook from "../../hooks/useMutateHook";
 import deleteCompany from "../../api/deleteCompany";
 import deleteUser from "../../api/deleteUser";
 import {useConfirm} from "material-ui-confirm";
@@ -23,9 +23,9 @@ let companies = {
 
 let users = {
   email: "Email",
-  phone: "Phone Number",
-  company_name: "Company Name",
-  user_state: "User State",
+  phoneNumber: "Phone Number",
+  companyName: "Company Name",
+  userState: "User State",
   actions: "",
 };
 
@@ -38,12 +38,14 @@ export default function BasicTable({
   setData,
   data,
 }) {
-  const mutation=useMutateHook(selectedDomain == "Companies"?deleteCompany():deleteUser())
+  const mutation = useMutateHook(
+    selectedDomain == "Companies" ? deleteCompany() : deleteUser()
+  );
 
   const confirm = useConfirm();
 
   const handleDelete = async id => {
-    mutation.mutate(id)
+    mutation.mutate(id);
   };
 
   const getDomain = () => {
@@ -97,32 +99,19 @@ export default function BasicTable({
               <TableRow sx={{backgroundColor: "#F0EFFF"}} key={index}>
                 {data?.domain == "Users" && (
                   <TableCell key="fullname">
-                    {row.first_name + " " + row.last_name}
+                    {row.firstName + " " + row.lastName}
                   </TableCell>
                 )}
                 {data?.domain &&
                   Object.entries(eval(data.domain.toLowerCase())).map(
-                    ([key, value]) => {
-                      if (key == "user_state") {
-                        return (
-                          <TableCell key={key}>
-                            {row[key] ? "Active" : "Inactive"}
-                          </TableCell>
-                        );
-                      } else {
-                        return <TableCell key={key}>{row[key]}</TableCell>;
-                      }
-                    }
+                    ([key, value]) => (
+                      <TableCell key={key}>{row[key]}</TableCell>
+                    )
                   )}
                 <TableCell>
                   <EditIcon
                     style={{cursor: "pointer"}}
                     onClick={() => {
-                      if (selectedDomain == "Users") {
-                        row.user_state = row?.user_state
-                          ? "Active"
-                          : "Inactive";
-                      }
                       handleOpen();
                       setEditFormData(row);
                       setAction("Edit");
@@ -134,11 +123,7 @@ export default function BasicTable({
                       cursor: "pointer",
                     }}
                     onClick={() => {
-                      if (selectedDomain == "Users") {
-                        handleConfirm(row.user_id);
-                      } else {
-                        handleConfirm(row.id);
-                      }
+                        handleConfirm(row._id);
                     }}
                   >
                     <DeleteIcon />

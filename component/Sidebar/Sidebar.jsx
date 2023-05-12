@@ -14,11 +14,13 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import Navbar from "../Navbar/Navbar"
 const drawerWidth = 240;
 
-export default function Sidebar({selectedDomain,setSelectedDomain,setPageNumber}) {
+export default function Sidebar({selectedDomain,setIsFilter,setSelectedDomain,setPageNumber,setFilterQuery}) {
 
   const handleClick=(domain)=>{
     setSelectedDomain(domain)
     setPageNumber(1)
+    setIsFilter(false)
+    setFilterQuery()
   }
 
   const selectedDomainStyle={

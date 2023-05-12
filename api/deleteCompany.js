@@ -2,7 +2,7 @@ import APIClient from "../services/api-client";
 import {useQueryClient} from "@tanstack/react-query";
 import {displayNotification} from "../services/notificationService";
 
-const apiClient = new APIClient("/company");
+const apiClient = new APIClient("/companies");
 
 const deleteCompany = () => {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ const deleteCompany = () => {
     },
     onSuccess: (data, variables, context) => {
       displayNotification("success", "Successfully Deleted");
-      queryClient.invalidateQueries({queryKey: ["company"]});
+      queryClient.invalidateQueries({queryKey: ["companies"]});
     },
   };
 };
