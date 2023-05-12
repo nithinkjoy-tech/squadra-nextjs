@@ -5,8 +5,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import InputLabel from "@mui/material/InputLabel";
 import CustomTextField from "../CustomTextField";
 import useMutateHook from "../../hooks/useMutateHook";
-import addUser from "../../api/addUser";
-import editUser from "../../api/editUser";
+import addUser from "../../api/users/addUser";
+import editUser from "../../api/users/editUser";
 import {
   Button,
   Box,

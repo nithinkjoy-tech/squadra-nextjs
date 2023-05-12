@@ -1,8 +1,8 @@
-import APIClient from "./../services/api-client";
+import APIClient from "../../services/api-client";
 
 const apiClient = new APIClient("/users");
 
-const getUser = (pageNumber) => {
+const getUser = pageNumber => {
   if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 1;
   return {
     queryKey: ["users", pageNumber],

@@ -1,10 +1,10 @@
-import APIClient from "../services/api-client";
+import APIClient from "../../services/api-client";
 import {useQueryClient} from "@tanstack/react-query";
-import {displayNotification} from "../services/notificationService";
+import {displayNotification} from "../../services/notificationService";
 
-const apiClient = new APIClient("/companies");
+const apiClient = new APIClient("/users");
 
-const addCompany = (setError, reset, handleClose) => {
+const addUser = (setError, reset, handleClose) => {
   const queryClient = useQueryClient();
 
   return {
@@ -25,9 +25,9 @@ const addCompany = (setError, reset, handleClose) => {
       reset();
       handleClose();
       displayNotification("success", "Successfully Added");
-      queryClient.invalidateQueries({queryKey: ["companies"]});
+      queryClient.invalidateQueries({queryKey: ["users"]});
     },
   };
 };
 
-export default addCompany;
+export default addUser;

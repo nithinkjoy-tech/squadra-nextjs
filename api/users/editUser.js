@@ -1,15 +1,21 @@
-import APIClient from "../services/api-client";
+import APIClient from "../../services/api-client";
 import {useQueryClient} from "@tanstack/react-query";
-import {displayNotification} from "../services/notificationService";
+import {displayNotification} from "../../services/notificationService";
 
-const apiClient = new APIClient("/roles");
+const apiClient = new APIClient("/users");
 
-const addRole= (setError, reset, handleClose) => {
+const editUser = (
+  setError,
+  reset,
+  handleClose,
+  setEditFormData,
+  initialUserData
+) => {
   const queryClient = useQueryClient();
 
   return {
     mutationFn: data => {
-      return apiClient.post(data);
+      return apiClient.put(data._id, data);
     },
     onError: (error, variables, context) => {
       if (error.response.status == "409") {
@@ -18,16 +24,17 @@ const addRole= (setError, reset, handleClose) => {
           message: error.response.data.message,
         });
       } else {
-        displayNotification("error", "Could not edit role data");
+        displayNotification("error", "Could not edit user data");
       }
     },
     onSuccess: (data, variables, context) => {
+      setEditFormData(initialUserData);
       reset();
       handleClose();
       displayNotification("success", "Successfully Added");
-      queryClient.invalidateQueries({queryKey: ["roles"]});
+      queryClient.invalidateQueries({queryKey: ["users"]});
     },
   };
 };
 
-export default addRole;
+export default editUser;

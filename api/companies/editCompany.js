@@ -1,15 +1,15 @@
-import APIClient from "../services/api-client";
+import APIClient from "../../services/api-client";
 import {useQueryClient} from "@tanstack/react-query";
-import {displayNotification} from "../services/notificationService";
+import {displayNotification} from "../../services/notificationService";
 
-const apiClient = new APIClient("/users");
+const apiClient = new APIClient("/companies");
 
-const editUser = (
+const editCompany = (
   setError,
   reset,
   handleClose,
   setEditFormData,
-  initialUserData
+  initialCompanyData
 ) => {
   const queryClient = useQueryClient();
 
@@ -24,17 +24,17 @@ const editUser = (
           message: error.response.data.message,
         });
       } else {
-        displayNotification("error", "Could not edit user data");
+        displayNotification("error", "Could not edit Company data");
       }
     },
     onSuccess: (data, variables, context) => {
-      setEditFormData(initialUserData);
+      setEditFormData(initialCompanyData);
       reset();
       handleClose();
-      displayNotification("success", "Successfully Added");
-      queryClient.invalidateQueries({queryKey: ["users"]});
+      displayNotification("success", "Successfully Edited");
+      queryClient.invalidateQueries({queryKey: ["companies"]});
     },
   };
 };
 
-export default editUser;
+export default editCompany;

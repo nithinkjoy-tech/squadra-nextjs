@@ -1,4 +1,4 @@
-import APIClient from "./../services/api-client";
+import APIClient from "../../services/api-client";
 
 const apiClient = new APIClient("/roles");
 

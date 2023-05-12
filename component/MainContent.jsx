@@ -3,12 +3,12 @@ import Header from "./Header";
 import DataTable from "./Table/DataTable";
 import Pagination from "./Pagination/Pagination";
 import useQueryHook from "../hooks/useQueryHook";
-import getUser from "../api/getUser";
-import getFilteredUser from "../api/getFilteredUser";
-import getCompany from "../api/getCompany";
-import getFilteredCompany from "../api/getFilteredCompany";
-import getRole from "../api/getRole";
-import getFilteredRole from "../api/getFilteredRole";
+import getUser from "../api/users/getUser";
+import getFilteredUser from "../api/users/getFilteredUser";
+import getCompany from "../api/companies/getCompany";
+import getFilteredCompany from "../api/companies/getFilteredCompany";
+import getRole from "../api/roles/getRole";
+import getFilteredRole from "../api/roles/getFilteredRole";
 import {ConfirmProvider} from "material-ui-confirm";
 import {displayNotification} from "../services/notificationService";
 

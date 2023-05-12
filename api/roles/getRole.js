@@ -1,11 +1,11 @@
-import APIClient from "./../services/api-client";
+import APIClient from "../../services/api-client";
 
-const apiClient = new APIClient("/companies");
+const apiClient = new APIClient("/roles");
 
-const getCompany = (pageNumber) => {
+const getUser = pageNumber => {
   if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 1;
   return {
-    queryKey: ["companies", pageNumber],
+    queryKey: ["roles", pageNumber],
     queryFn: () => {
       return apiClient.getAll(`?pageSize=4&pageNo=${pageNumber}`);
     },
@@ -13,4 +13,4 @@ const getCompany = (pageNumber) => {
   };
 };
 
-export default getCompany;
+export default getUser;

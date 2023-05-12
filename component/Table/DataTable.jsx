@@ -9,9 +9,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import useMutateHook from "../../hooks/useMutateHook";
-import deleteCompany from "../../api/deleteCompany";
-import deleteUser from "../../api/deleteUser";
-import deleteRole from "../../api/deleteRole";
+import deleteCompany from "../../api/companies/deleteCompany";
+import deleteUser from "../../api/users/deleteUser";
+import deleteRole from "../../api/roles/deleteRole";
 import {useConfirm} from "material-ui-confirm";
 
 let companies = {
@@ -47,16 +47,13 @@ export default function BasicTable({
   setData,
   data,
 }) {
+  const getDeleteMethod = selectedDomain => {
+    if (selectedDomain == "Users") return deleteUser();
+    if (selectedDomain == "Companies") return deleteCompany();
+    if (selectedDomain == "Roles") return deleteRole();
+  };
 
-  const getDeleteMethod=(selectedDomain)=>{
-    if(selectedDomain=="Users") return deleteUser()
-    if(selectedDomain=="Companies") return deleteCompany()
-    if(selectedDomain=="Roles") return deleteRole()
-  }
-
-  const mutation = useMutateHook(
-    getDeleteMethod(selectedDomain)
-  );
+  const mutation = useMutateHook(getDeleteMethod(selectedDomain));
 
   const confirm = useConfirm();
 
@@ -141,7 +138,7 @@ export default function BasicTable({
                       cursor: "pointer",
                     }}
                     onClick={() => {
-                        handleConfirm(row._id);
+                      handleConfirm(row._id);
                     }}
                   >
                     <DeleteIcon />

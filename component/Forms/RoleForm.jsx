@@ -5,11 +5,17 @@ import InputLabel from "@mui/material/InputLabel";
 import dayjs from "dayjs";
 import CustomTextField from "../CustomTextField";
 import useMutateHook from "../../hooks/useMutateHook";
-import addRole from "../../api/addRole";
-import editRole from "../../api/editRole";
+import addRole from "../../api/roles/addRole";
+import editRole from "../../api/roles/editRole";
 import * as Yup from "yup";
-import {Button, Box, Typography, FormHelperText,Select,
-    MenuItem,} from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  FormHelperText,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import {useForm, FormProvider} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -17,27 +23,27 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 
 const schema = Yup.object().shape({
-    roleName: Yup.string()
-      .oneOf(["Admin", "Manager"])
-      .required()
-      .label("Role Name"),
-    organizationName: Yup.string()
-      .required()
-      .min(3, "Minimum 3 Characters required")
-      .label("Organization Name"),
-    createdDate: Yup.string().required().label("Created Date"),
-    roleState: Yup.string()
-      .oneOf(["Active", "Inactive"])
-      .required()
-      .label("Role State"),
-    roleId: Yup.string()
-      .required()
-      .matches(
-        /^[A-Z]{3}[0-9]{3}$/,
-        "First 3 characters should be uppercase alphabet and next 3 should be number"
-      )
-      .label("Role ID"),
-  });
+  roleName: Yup.string()
+    .oneOf(["Admin", "Manager"])
+    .required()
+    .label("Role Name"),
+  organizationName: Yup.string()
+    .required()
+    .min(3, "Minimum 3 Characters required")
+    .label("Organization Name"),
+  createdDate: Yup.string().required().label("Created Date"),
+  roleState: Yup.string()
+    .oneOf(["Active", "Inactive"])
+    .required()
+    .label("Role State"),
+  roleId: Yup.string()
+    .required()
+    .matches(
+      /^[A-Z]{3}[0-9]{3}$/,
+      "First 3 characters should be uppercase alphabet and next 3 should be number"
+    )
+    .label("Role ID"),
+});
 
 const style = {
   position: "absolute",
@@ -98,13 +104,7 @@ export default function RoleForm({
   const mutation = useMutateHook(
     action == "Add"
       ? addRole(setError, reset, handleClose)
-      : editRole(
-          setError,
-          reset,
-          handleClose,
-          setEditFormData,
-          initialRoleData
-        )
+      : editRole(setError, reset, handleClose, setEditFormData, initialRoleData)
   );
 
   const submit = async data => {
@@ -140,7 +140,7 @@ export default function RoleForm({
 
   const inputBoxStyles = {
     backgroundColor: "#F0EFFF",
-    width:"100%"
+    width: "100%",
   };
 
   return (
