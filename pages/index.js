@@ -4,6 +4,7 @@ import MainContent from "../component/MainContent";
 import CompanyForm from "../component/Forms/CompanyForm";
 import UserForm from "../component/Forms/UserForm";
 import RoleForm from "../component/Forms/RoleForm";
+import WholesalerForm from "../component/Forms/WholesalerForm";
 import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
@@ -72,6 +73,7 @@ export default function Home() {
             {selectedDomain == "Users" && <UserForm {...formProps} />}
             {selectedDomain == "Roles" && <RoleForm {...formProps} />}
             {selectedDomain == "Companies" && <CompanyForm {...formProps} />}
+            {selectedDomain == "Wholesalers" && <WholesalerForm {...formProps} />}
             <MainContent {...mainContentProps} />
           </>
         </Grid>

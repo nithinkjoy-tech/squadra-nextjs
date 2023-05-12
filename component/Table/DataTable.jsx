@@ -12,6 +12,7 @@ import useMutateHook from "../../hooks/useMutateHook";
 import deleteCompany from "../../api/companies/deleteCompany";
 import deleteUser from "../../api/users/deleteUser";
 import deleteRole from "../../api/roles/deleteRole";
+import deleteWholesaler from "../../api/wholesalers/deleteWholesaler";
 import {useConfirm} from "material-ui-confirm";
 
 let companies = {
@@ -35,7 +36,14 @@ let users = {
   phoneNumber: "Phone Number",
   companyName: "Company Name",
   userState: "User State",
-  actions: "",
+};
+
+let wholesalers = {
+  firstName:"First Name",
+  lastName:"Last Name",
+  email: "Email",
+  phoneNumber: "Phone Number",
+  wholesalerId: "Wholesaler Id",
 };
 
 export default function BasicTable({
@@ -51,6 +59,7 @@ export default function BasicTable({
     if (selectedDomain == "Users") return deleteUser();
     if (selectedDomain == "Companies") return deleteCompany();
     if (selectedDomain == "Roles") return deleteRole();
+    if (selectedDomain == "Wholesalers") return deleteWholesaler();
   };
 
   const mutation = useMutateHook(getDeleteMethod(selectedDomain));
