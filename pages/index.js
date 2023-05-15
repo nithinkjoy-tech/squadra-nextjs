@@ -9,7 +9,7 @@ import {Grid} from "@material-ui/core";
 import {useState} from "react";
 
 export default function Home() {
-  const [selectedDomain, setSelectedDomain] = useState("Companies");
+  const [selectedDomain, setSelectedDomain] = useState("Users");
   const [editFormData, setEditFormData] = useState(null);
   const [open, setOpen] = useState(false);
   const [action, setAction] = useState("Add");
