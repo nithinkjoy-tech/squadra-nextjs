@@ -6,6 +6,7 @@ const getFilteredCompany = (filterQuery, pageNumber) => {
   if (!pageNumber || Object.is(NaN, pageNumber)) pageNumber = 1;
   let date =
     filterQuery?.validTill == "Invalid Date" ? "" : filterQuery?.validTill;
+    
   return {
     queryKey: ["companies", filterQuery, pageNumber],
     queryFn: () => {
