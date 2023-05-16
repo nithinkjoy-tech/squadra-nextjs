@@ -56,7 +56,6 @@ export default function CompanyForm({
   handleClose,
   editFormData,
   setEditFormData,
-  selectedDomain,
   setFilterQuery,
   setIsFilter,
   action,
